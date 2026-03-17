@@ -1,0 +1,2228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The GOAT Playbook</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23c0392b'/><text x='50' y='68' font-size='55' font-weight='bold' fill='white' text-anchor='middle' font-family='Arial'>G</text></svg>">
+<style>
+:root {
+  --bg: #121212;
+  --surface: #1e1e1e;
+  --surface-alt: #2a2a2a;
+  --border: #333;
+  --text: #e8e8e8;
+  --text-muted: #888;
+  --accent: #c0392b;
+  --accent-dim: rgba(192,57,43,0.10);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* HEADER */
+.header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  gap: 14px;
+}
+.menu-btn {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-size: 18px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  line-height: 1;
+}
+.menu-btn:hover { border-color: var(--text-muted); }
+.header h1 { font-size: 18px; color: #fff; letter-spacing: 0.5px; cursor: pointer; }
+.header h1:hover { opacity: 0.85; }
+.header h1 span { color: var(--accent); font-weight: 800; }
+.header-sub { color: var(--text-muted); font-size: 11px; }
+
+/* SEARCH */
+.search-wrap {
+  padding: 10px 24px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+.search-wrap input {
+  width: 100%;
+  padding: 9px 14px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 14px;
+  outline: none;
+}
+.search-wrap input:focus { border-color: var(--accent); }
+.search-wrap input::placeholder { color: var(--text-muted); }
+
+/* BACKDROP */
+.backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  z-index: 199;
+}
+.backdrop.show { display: block; }
+
+/* SIDEBAR - slide-in overlay */
+.side {
+  position: fixed;
+  top: 0;
+  left: -300px;
+  width: 270px;
+  height: 100vh;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  padding: 0 0 20px;
+  z-index: 200;
+  transition: left 0.25s ease;
+}
+.side.open { left: 0; }
+.side-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--border);
+}
+.side-header span { font-size: 15px; font-weight: 700; color: var(--text); }
+.side-close {
+  font-size: 22px;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+  line-height: 1;
+}
+.side-close:hover { color: var(--text); background: var(--surface-alt); }
+.side-title {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+  padding: 14px 18px 4px;
+  font-weight: 700;
+}
+.side-item {
+  padding: 8px 18px;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--text-muted);
+  border-left: 3px solid transparent;
+  transition: all 0.12s;
+}
+.side-item:hover { color: var(--text); background: var(--surface-alt); }
+.side-item.active {
+  color: #fff;
+  background: var(--accent-dim);
+  border-left-color: var(--accent);
+  font-weight: 600;
+}
+
+/* MAIN - full width */
+.main {
+  padding: 28px 36px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.main h2 { font-size: 20px; margin-bottom: 4px; }
+.main .subtitle { color: var(--text-muted); font-size: 13px; margin-bottom: 24px; }
+
+/* CARDS */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+.card-head {
+  padding: 12px 18px;
+  background: var(--surface-alt);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  user-select: none;
+}
+.card-head h3 { font-size: 15px; font-weight: 600; }
+.card-head .arr {
+  color: var(--text-muted);
+  font-size: 12px;
+  transition: transform 0.15s;
+}
+.card-head .arr.open { transform: rotate(90deg); }
+.card-body { padding: 18px; display: none; }
+.card-body.show { display: block; }
+
+/* SECTIONS inside cards */
+.sec {
+  margin-bottom: 16px;
+  padding: 14px;
+  background: var(--bg);
+  border-radius: 6px;
+  position: relative;
+}
+.sec:last-child { margin-bottom: 0; }
+.sec h4 {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border);
+}
+.sec .script {
+  white-space: pre-wrap;
+  font-size: 13.5px;
+  line-height: 1.8;
+}
+.sec .script .ph {
+  color: var(--accent);
+  font-weight: 600;
+  border-bottom: 1px dashed var(--accent);
+}
+.copy-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  cursor: pointer;
+}
+.copy-btn:hover { border-color: var(--text-muted); color: var(--text); }
+.copy-btn.ok { border-color: #27ae60; color: #27ae60; }
+
+/* CALLOUT */
+.callout {
+  border-left: 3px solid var(--accent);
+  background: var(--surface-alt);
+  border-radius: 0 6px 6px 0;
+  padding: 12px 16px;
+  margin: 14px 0;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.callout strong { color: var(--text); }
+
+/* HOME GRID */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.grid-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  cursor: pointer;
+  transition: border-color 0.12s;
+}
+.grid-card:hover { border-color: var(--accent); }
+.grid-card h4 { font-size: 14px; margin-bottom: 4px; }
+.grid-card p { font-size: 12px; color: var(--text-muted); }
+
+/* TWO COLUMNS */
+.cols { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+.col {
+  background: var(--bg);
+  border-radius: 6px;
+  padding: 16px;
+}
+.col h4 {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border);
+}
+.col ul { list-style: none; }
+.col li { padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+.col li:last-child { border-bottom: none; }
+
+/* TERM GRID */
+.terms { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; margin: 12px 0; }
+.term {
+  background: var(--bg);
+  border-radius: 6px;
+  padding: 14px;
+  border-left: 3px solid var(--accent);
+}
+.term h5 { font-size: 13px; color: var(--text); margin-bottom: 4px; }
+.term p { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+
+/* LINK BOX */
+.link-box {
+  display: block;
+  background: var(--accent-dim);
+  border: 1px solid rgba(192,57,43,0.3);
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin: 16px 0;
+  text-decoration: none;
+  color: var(--text);
+  transition: border-color 0.12s;
+}
+.link-box:hover { border-color: var(--accent); }
+.link-box h4 { font-size: 14px; margin-bottom: 2px; }
+.link-box p { font-size: 12px; color: var(--text-muted); }
+
+/* BREADCRUMB */
+.breadcrumb {
+  padding: 8px 24px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--text-muted);
+  max-width: 100%;
+}
+.breadcrumb a {
+  color: var(--text-muted);
+  text-decoration: none;
+  cursor: pointer;
+}
+.breadcrumb a:hover { color: var(--text); }
+.breadcrumb .sep { margin: 0 6px; opacity: 0.5; }
+
+/* COPY ALL */
+.copy-all-btn {
+  display: inline-block;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  margin-bottom: 16px;
+}
+.copy-all-btn:hover { border-color: var(--text-muted); color: var(--text); }
+.copy-all-btn.ok { border-color: #27ae60; color: #27ae60; }
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .main { padding: 16px; }
+  .cols { grid-template-columns: 1fr; }
+  .side { width: 85vw; }
+}
+
+/* PRINT */
+@media print {
+  body { background: #fff; color: #000; }
+  .header, .search-wrap, .breadcrumb, .backdrop, .side, .copy-btn, .copy-all-btn, .grid, .grid-card, .link-box, .menu-btn { display: none !important; }
+  .main { padding: 0; max-width: 100%; }
+  .card { border: 1px solid #ccc; break-inside: avoid; margin-bottom: 12px; }
+  .card-head { background: #f5f5f5; color: #000; }
+  .card-head h3 { color: #000; }
+  .card-head .arr { display: none; }
+  .card-body { display: block !important; padding: 12px; }
+  .sec { background: #fafafa; border: 1px solid #eee; }
+  .sec h4 { color: #555; border-bottom-color: #ddd; }
+  .sec .script { color: #000; }
+  .sec .script .ph { color: #c0392b; border-bottom-color: #c0392b; }
+  .callout { background: #f9f9f9; border-left-color: #c0392b; color: #333; }
+  .callout strong { color: #000; }
+  .col { background: #fafafa; }
+  .col h4 { color: #555; }
+  .term { background: #fafafa; border-left-color: #c0392b; }
+  .term h5 { color: #000; }
+  .term p { color: #333; }
+  .cols { grid-template-columns: 1fr 1fr; }
+  #print-header { display: block !important; font-size: 18px; font-weight: 700; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 2px solid #c0392b; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <button class="menu-btn" onclick="toggleMenu()" aria-label="Menu">&#9776;</button>
+  <div>
+    <h1 onclick="nav('home')">The <span>GOAT</span> Playbook</h1>
+    <div class="header-sub">by G.O.A.T. Leads</div>
+  </div>
+</div>
+
+<div class="search-wrap">
+  <input type="text" id="searchInput" placeholder="Search all scripts and articles..." oninput="handleSearch(this.value)">
+</div>
+
+<div class="breadcrumb" id="breadcrumb"><a onclick="nav('home')">Home</a></div>
+<div id="print-header" style="display:none;">The GOAT Playbook</div>
+
+<div class="backdrop" id="backdrop" onclick="toggleMenu()"></div>
+
+<div class="side" id="sidebar">
+  <div class="side-header">
+    <span>Menu</span>
+    <div class="side-close" onclick="toggleMenu()">&times;</div>
+  </div>
+  <div class="side-title">Quick Start</div>
+  <div class="side-item active" onclick="nav('home')">Home</div>
+  <div class="side-item" onclick="nav('compare')">Real-Time vs Aged</div>
+
+    <div class="side-title">Knowledge Base</div>
+    <div class="side-item" onclick="nav('kb_speed')">Speed to Lead</div>
+    <div class="side-item" onclick="nav('kb_voicemail')">Getting Past Voicemail</div>
+    <div class="side-item" onclick="nav('kb_templates')">Text & Email Templates</div>
+    <div class="side-item" onclick="nav('kb_objections')">Objection Handling</div>
+    <div class="side-item" onclick="nav('kb_understanding')">Understanding the Lead</div>
+    <div class="side-item" onclick="nav('kb_cadence')">Follow-Up Cadence</div>
+    <div class="side-item" onclick="nav('kb_mindset')">Mindset & Goals</div>
+
+    <div class="side-title">Final Expense (FEX)</div>
+    <div class="side-item" onclick="nav('fex1')">FEX Script #1</div>
+    <div class="side-item" onclick="nav('fex2')">FEX Script #2</div>
+    <div class="side-item" onclick="nav('aged')">Aged Lead Script</div>
+
+    <div class="side-title">Mortgage Protection</div>
+    <div class="side-item" onclick="nav('mp1')">MP Script #1</div>
+    <div class="side-item" onclick="nav('mp2')">MP Script #2</div>
+
+    <div class="side-title">IUL</div>
+    <div class="side-item" onclick="nav('iul2')">IUL Script #2</div>
+    <div class="side-item" onclick="nav('iul3')">IUL Script #3</div>
+    <div class="side-item" onclick="nav('iulterms')">IUL Terminology</div>
+
+    <div class="side-title">Veterans</div>
+    <div class="side-item" onclick="nav('vet1')">Vet Script #1</div>
+    <div class="side-item" onclick="nav('vet2')">Vet Script #2</div>
+    <div class="side-item" onclick="nav('vetiul')">Vet IUL Script</div>
+
+    <div class="side-title">Tools & Forms</div>
+    <div class="side-item" onclick="nav('financial')">Financial Inventory</div>
+  <div class="side-item" onclick="nav('tracker')">Activity Tracker</div>
+</div>
+
+<div class="main" id="main"></div>
+
+<script>
+const V = {};
+
+// ===== HOME =====
+V.home = `
+<h2>The GOAT Playbook</h2>
+<p class="subtitle">Everything you need to work your leads and close deals.</p>
+
+<a class="link-box" href="https://demo.goatleads.com" target="_blank" rel="noopener">
+  <h4>Try demo.goatleads.com</h4>
+  <p>Fill out the same forms your leads see. Understand their experience before you call.</p>
+</a>
+
+<h3 style="font-size:14px;color:var(--text-muted);margin-bottom:10px;text-transform:uppercase;letter-spacing:1px;">Knowledge Base</h3>
+<div class="grid">
+  <div class="grid-card" onclick="nav('kb_speed')"><h4>Speed to Lead</h4><p>When and how fast to call</p></div>
+  <div class="grid-card" onclick="nav('kb_voicemail')"><h4>Getting Past Voicemail</h4><p>Scripts and strategies</p></div>
+  <div class="grid-card" onclick="nav('kb_templates')"><h4>Text & Email Templates</h4><p>Ready-to-send messages</p></div>
+  <div class="grid-card" onclick="nav('kb_objections')"><h4>Objection Handling</h4><p>Rebuttals that work</p></div>
+  <div class="grid-card" onclick="nav('kb_understanding')"><h4>Understanding the Lead</h4><p>What they filled out and why</p></div>
+  <div class="grid-card" onclick="nav('kb_cadence')"><h4>Follow-Up Cadence</h4><p>How many touches and when</p></div>
+  <div class="grid-card" onclick="nav('kb_mindset')"><h4>Mindset & Goals</h4><p>Dials, rates, and motivation</p></div>
+  <div class="grid-card" onclick="nav('compare')"><h4>Real-Time vs Aged</h4><p>How scripts differ by lead type</p></div>
+</div>
+
+<h3 style="font-size:14px;color:var(--text-muted);margin-bottom:10px;text-transform:uppercase;letter-spacing:1px;">Scripts</h3>
+<div class="grid">
+  <div class="grid-card" onclick="nav('fex1')"><h4>Final Expense</h4><p>2 scripts + aged opener</p></div>
+  <div class="grid-card" onclick="nav('mp1')"><h4>Mortgage Protection</h4><p>2 scripts for homeowners</p></div>
+  <div class="grid-card" onclick="nav('iul2')"><h4>IUL</h4><p>2 scripts + terminology guide</p></div>
+  <div class="grid-card" onclick="nav('vet1')"><h4>Veterans</h4><p>2 FEX scripts + 1 IUL script</p></div>
+  <div class="grid-card" onclick="nav('financial')"><h4>Tools & Forms</h4><p>Financial inventory + tracker</p></div>
+</div>
+`;
+
+// ===== KB: SPEED TO LEAD =====
+V.kb_speed = `
+<h2>Speed to Lead</h2>
+<p class="subtitle">When to call and how fast your response time needs to be.</p>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>The 5-Minute Rule</h3><span class="arr open">&#9654;</span></div>
+  <div class="card-body show"><div class="sec"><div class="script">Your odds of contacting a real-time lead drop dramatically with every minute that passes.
+
+<strong>Within 5 minutes:</strong> You are 21x more likely to make contact and enter the sales process.
+<strong>After 10 minutes:</strong> Contact rates drop by 400%.
+<strong>After 30 minutes:</strong> The lead has likely moved on or been contacted by another agent.
+<strong>After 1 hour:</strong> The lead may not even remember filling out the form.
+
+The single most important thing you can do with a real-time lead is <strong>call immediately</strong>. Drop what you're doing and dial. The first agent to make contact wins the majority of the time.</div></div></div>
+</div>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>Best Times to Reach Leads</h3><span class="arr">&#9654;</span></div>
+  <div class="card-body"><div class="sec"><div class="script"><strong>Peak Windows (lead's local time):</strong>
+- <strong>9:00 - 11:00 AM</strong> - Morning is the #1 window. People are settled in, coffee in hand, and more receptive.
+- <strong>4:00 - 6:00 PM</strong> - Late afternoon, after the workday winds down. Second-best window.
+
+<strong>Avoid:</strong>
+- 12:00 - 1:30 PM (lunch)
+- Before 8:30 AM (too early, people are rushing)
+- After 8:00 PM (feels intrusive for a first call)
+
+<strong>Best Days:</strong>
+- <strong>Wednesday and Thursday</strong> have the highest contact and conversion rates.
+- Monday people are catching up from the weekend. Friday people are checking out.
+- Saturday 9 AM - 12 PM can be surprisingly effective for homeowners (MP leads).
+
+<strong>Pro tip:</strong> Always call in the lead's local time zone, not yours.</div></div></div>
+</div>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>Real-Time vs Aged Call Schedule</h3><span class="arr">&#9654;</span></div>
+  <div class="card-body">
+    <div class="cols">
+      <div class="col">
+        <h4>Real-Time Leads</h4>
+        <ul>
+          <li><strong>Immediately</strong> - First call within 5 minutes</li>
+          <li><strong>15 min later</strong> - If no answer, call again</li>
+          <li><strong>1 hour later</strong> - Third attempt + leave voicemail</li>
+          <li><strong>3-4 hours later</strong> - Try once more same day</li>
+          <li><strong>Next day AM</strong> - Call in the morning window</li>
+          <li><strong>Next day PM</strong> - Try the afternoon window</li>
+          <li>Continue cadence for 2 weeks (see Follow-Up Cadence)</li>
+        </ul>
+      </div>
+      <div class="col">
+        <h4>Aged Leads</h4>
+        <ul>
+          <li><strong>Speed doesn't matter</strong> - These are days/weeks/months old</li>
+          <li>Focus on <strong>volume</strong> - Work through more leads per session</li>
+          <li>Call during <strong>peak windows</strong> (9-11 AM, 4-6 PM)</li>
+          <li>Batch your aged leads into power-dial sessions</li>
+          <li>3-5 attempts over 1 week, then move to drip</li>
+          <li>They're cheaper, so your cost-per-sale can still be strong</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>How Many Attempts Before Moving On</h3><span class="arr">&#9654;</span></div>
+  <div class="card-body"><div class="sec"><div class="script"><strong>Real-Time Leads: 6-8 attempts over 2 weeks</strong>
+Mix your touches: calls, voicemails, texts, and emails. Don't just call 8 times - vary the channel.
+
+<strong>Aged Leads: 3-5 attempts over 1 week</strong>
+If no contact after 5 attempts, move them to a long-term drip sequence. Don't delete them.
+
+<strong>Key Principle:</strong> Most agents give up after 1-2 attempts. 80% of sales require 5+ touches. The agents who make 6+ attempts are the ones closing deals that everyone else left on the table.</div></div></div>
+</div>
+`;
+
+// ===== KB: VOICEMAIL =====
+V.kb_voicemail = `
+<h2>Getting Past Voicemail</h2>
+<p class="subtitle">Voicemail scripts, timing, and strategies to get callbacks.</p>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>Voicemail Script Templates</h3><span class="arr open">&#9654;</span></div>
+  <div class="card-body show">
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>First Attempt</h4>
+      <div class="script">Hey <span class="ph">[Name]</span>, this is <span class="ph">[Your Name]</span>. I'm calling about the information you requested online for the life insurance programs in <span class="ph">[State]</span>. I'm the licensed specialist assigned to your case. Give me a call back at <span class="ph">[Your Number]</span> - I'll also send you a text so you have my info. Talk soon.</div>
+    </div>
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>Third Attempt</h4>
+      <div class="script">Hey <span class="ph">[Name]</span>, it's <span class="ph">[Your Name]</span> again. I just want to make sure you got the information you were looking for. I was assigned to help you find the best rates in <span class="ph">[State]</span>, and I have a few options ready for you. Call or text me at <span class="ph">[Your Number]</span> when you get a chance.</div>
+    </div>
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>Final Attempt</h4>
+      <div class="script">Hi <span class="ph">[Name]</span>, this is <span class="ph">[Your Name]</span> - just reaching out one last time about your insurance request. I don't want you to miss out on these rates since they're based on your current age and health. If you're still interested, my number is <span class="ph">[Your Number]</span>. If not, no worries at all. Take care.</div>
+    </div>
+    <div class="callout">
+      <strong>Keep every voicemail under 30 seconds.</strong> Longer messages get skipped. Lead with their name, state your purpose in one sentence, and leave your number clearly.
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>When to Leave a Voicemail</h3><span class="arr">&#9654;</span></div>
+  <div class="card-body"><div class="sec"><div class="script">Don't leave a voicemail every single time you call. It gets annoying and they'll block you.
+
+<strong>Recommended pattern:</strong>
+- <strong>1st call:</strong> Leave a voicemail + send a text
+- <strong>2nd call:</strong> No voicemail (just ring and hang up - they'll see the missed call)
+- <strong>3rd call:</strong> Leave a voicemail with a slightly different message
+- <strong>4th call+:</strong> Switch to text-only outreach
+
+This pattern shows persistence without being pushy. The missed call without a voicemail on the 2nd attempt creates curiosity.</div></div></div>
+</div>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>Voicemail-to-Text Strategy</h3><span class="arr">&#9654;</span></div>
+  <div class="card-body"><div class="sec"><div class="script">Most smartphones automatically transcribe voicemails. Your voicemail is basically a text message that the lead will read, not listen to.
+
+<strong>Optimize for transcription:</strong>
+- Speak clearly and at a moderate pace
+- <strong>Front-load the important info</strong> - say their name and your purpose in the first 5 seconds
+- Spell out your phone number slowly (the transcription will catch it)
+- Avoid filler words like "um," "uh," "so basically"
+- Keep it short - long voicemails get cut off in transcription previews
+
+<strong>Think of your voicemail as a text message you're dictating.</strong> If it wouldn't work as a text, it won't work as a transcribed voicemail either.</div></div></div>
+</div>
+`;
+
+// ===== KB: TEXT & EMAIL TEMPLATES =====
+V.kb_templates = `
+<h2>Text & Email Templates</h2>
+<p class="subtitle">Ready-to-send messages for every stage of outreach.</p>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>Initial Outreach Texts (by Lead Type)</h3><span class="arr open">&#9654;</span></div>
+  <div class="card-body show">
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>Final Expense (FEX)</h4>
+      <div class="script">Hi <span class="ph">[Name]</span>, this is <span class="ph">[Your Name]</span> with the benefits center. I'm reaching out about the life insurance info you requested for <span class="ph">[State]</span>. Do you have a few minutes for a quick call?</div>
+    </div>
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>Mortgage Protection</h4>
+      <div class="script">Hey <span class="ph">[Name]</span>, this is <span class="ph">[Your Name]</span>. I'm the underwriter assigned to go over the mortgage protection info you requested. I just sent you my credentials via text. Do you have a couple minutes?</div>
+    </div>
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>IUL</h4>
+      <div class="script">Hey <span class="ph">[Name]</span>, this is <span class="ph">[Your Name]</span> with <span class="ph">[Company]</span>. We got your request about the IUL for retirement. Do you prefer a quick call or text to go over your options?</div>
+    </div>
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>Veterans</h4>
+      <div class="script">Hey <span class="ph">[Name]</span>, this is <span class="ph">[Your Name]</span>. I'm reaching out about the veterans insurance request you submitted. I specialize in helping vets find the best coverage. Got a few minutes?</div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>Follow-Up Text Sequence</h3><span class="arr">&#9654;</span></div>
+  <div class="card-body">
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>Day 1 Follow-Up</h4>
+      <div class="script">Hey <span class="ph">[Name]</span>, just wanted to make sure you got my message yesterday about your insurance request. Would you like to set up a quick call?</div>
+    </div>
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>Day 3 Follow-Up</h4>
+      <div class="script">Hi <span class="ph">[Name]</span>, checking in one more time on your insurance request. I have some options ready for you. Is there a better time to reach you this week?</div>
+    </div>
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>Day 7 Follow-Up (Last Text)</h4>
+      <div class="script"><span class="ph">[Name]</span>, still interested in learning about your insurance options? Reply 1 if you'd like to connect, or 2 if you're all set. Either way, no pressure.</div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>Email Templates</h3><span class="arr">&#9654;</span></div>
+  <div class="card-body">
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>First Contact Email</h4>
+      <div class="script"><strong>Subject:</strong> Your insurance request for <span class="ph">[State]</span>
+
+Hi <span class="ph">[Name]</span>,
+
+My name is <span class="ph">[Your Name]</span> and I'm the licensed specialist assigned to your insurance request. I tried reaching you by phone today.
+
+I work with all the top-rated carriers in <span class="ph">[State]</span> and my job is to find you the best coverage at the most affordable rate. The process is simple - I just need about 10 minutes to ask a few questions and put together your options.
+
+You can reach me at <span class="ph">[Phone]</span> or just reply to this email with a good time to chat.
+
+Best,
+<span class="ph">[Your Name]</span>
+<span class="ph">[License #]</span></div>
+    </div>
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>Follow-Up Email</h4>
+      <div class="script"><strong>Subject:</strong> Quick follow-up on your insurance options
+
+Hi <span class="ph">[Name]</span>,
+
+Just following up - I have a few options ready based on your request. No commitment needed, I just want to make sure you have the information you were looking for.
+
+If you're still interested, I'm available this week. Just reply with a good time or call me at <span class="ph">[Phone]</span>.
+
+Thanks,
+<span class="ph">[Your Name]</span></div>
+    </div>
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>Last Chance Email</h4>
+      <div class="script"><strong>Subject:</strong> Closing your file - <span class="ph">[Name]</span>
+
+Hi <span class="ph">[Name]</span>,
+
+I've tried to reach you a few times about the insurance information you requested. I don't want to keep bothering you, so this will be my last outreach.
+
+If you'd like to revisit this down the road, you're always welcome to reach out. My number is <span class="ph">[Phone]</span>.
+
+Wishing you and your family all the best,
+<span class="ph">[Your Name]</span></div>
+    </div>
+  </div>
+</div>
+`;
+
+// ===== KB: OBJECTION HANDLING =====
+V.kb_objections = `
+<h2>Objection Handling 101</h2>
+<p class="subtitle">Proven rebuttals for the objections you'll hear every day.</p>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>"I didn't fill out this form"</h3><span class="arr open">&#9654;</span></div>
+  <div class="card-body show">
+    <div class="callout"><strong>This is the #1 objection agents ask about.</strong> It does NOT mean the lead is fake. GOAT Leads uses TrustedForm-certified capture for premium leads, meaning every submission is verified with a timestamp and IP address. Upon request, GOAT can provide example ads and form verification.</div>
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>Why This Happens</h4>
+      <div class="script">Leads are often <strong>serial form-fillers</strong>. When someone is researching life insurance online, they'll fill out 3-5 forms from different advertisers in a single browsing session. By the time you call, they genuinely may not remember your specific form.
+
+This is <strong>normal lead behavior</strong> and does not mean the lead is bad. It means the person was actively shopping for insurance - which is exactly who you want to talk to.</div>
+    </div>
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>Rebuttal</h4>
+      <div class="script">"I completely understand - a lot of people fill out several forms when they're researching insurance online and don't always remember each one. We actually have verification showing the form was submitted from your area on <span class="ph">[date]</span>. You were looking for information on affordable life insurance options at the time. Does that ring a bell?"
+
+If they still push back: "No worries at all. Since I have you on the phone, can I at least give you the information you were originally looking for? It only takes a couple minutes."</div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>"The form said it was free / low-cost"</h3><span class="arr">&#9654;</span></div>
+  <div class="card-body">
+    <div class="callout"><strong>GOAT Leads does not advertise free insurance products.</strong> The ads promote affordable, state-regulated options. If a lead claims the form promised something free, they may be confusing your ad with another one they saw, or misremembering the language.</div>
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>Rebuttal</h4>
+      <div class="script">"I hear you. The form was about finding <strong>affordable</strong> options, not free ones - there's really no such thing as free life insurance. And here's the thing: if it were free or so cheap you didn't need any help, you would've already gotten a higher plan on your own, right?
+
+My job is to shop all the carriers in <span class="ph">[State]</span> and find you the <strong>most affordable option</strong> that actually protects your family. A lot of my clients are surprised at how affordable it actually is. Can I at least show you what's available?"</div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>"I need to think about it"</h3><span class="arr">&#9654;</span></div>
+  <div class="card-body"><div class="sec">
+    <button class="copy-btn" onclick="copyText(this)">Copy</button>
+    <h4>Rebuttal</h4>
+    <div class="script">"I totally understand, and I'd never want you to rush into anything. Most of my clients felt the same way. Usually when someone says that, it's either about the coverage amount or the price. Which one is it for you?"
+
+<strong>Isolate the real objection.</strong> "Think about it" is almost never the real reason. Dig into what's actually holding them back - it's usually price, trust, or timing.
+
+If it's price: "That's exactly why I showed you three options. The Bronze plan at <span class="ph">[$]</span>/month - is that something you could work with?"
+
+If it's trust: "I completely get it. That's why the insurance company gives you a full 30 days to review the policy after you're approved. Nothing is set in stone today."</div>
+  </div></div>
+</div>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>"I already have insurance"</h3><span class="arr">&#9654;</span></div>
+  <div class="card-body"><div class="sec">
+    <button class="copy-btn" onclick="copyText(this)">Copy</button>
+    <h4>Rebuttal</h4>
+    <div class="script">"That's great that you were proactive about that! What kind of coverage do you have? Is it through work or a private policy?"
+
+<strong>If it's through work:</strong> "Did you know that if you ever leave that job, you lose that coverage? Most workplace policies don't follow you. That's why a lot of people get a personal policy as a backup."
+
+<strong>If it's a small policy:</strong> "How much coverage do you have? A lot of people don't realize that the average funeral alone costs $10-15K, and that's before any other bills. Would it hurt to at least see if you could get additional coverage at a good rate?"
+
+<strong>If it's term:</strong> "When does that expire? A lot of people don't realize their term policy will either end or the premiums will skyrocket when it renews. Have you looked at what happens after your term is up?"</div>
+  </div></div>
+</div>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>"I can't afford it"</h3><span class="arr">&#9654;</span></div>
+  <div class="card-body"><div class="sec">
+    <button class="copy-btn" onclick="copyText(this)">Copy</button>
+    <h4>Rebuttal</h4>
+    <div class="script">"I completely understand that budget is important - that's exactly why we look at multiple options. My job isn't to sell you the most expensive plan. It's to find something that fits your budget AND protects your family.
+
+Can I ask you this: if something happened to you tomorrow, could your family afford your funeral and keep paying the bills? If not, can they afford NOT to have this?
+
+Let me show you the most affordable option. For a lot of my clients, we're talking about the cost of a couple coffees per week. Is that something worth looking at?"</div>
+  </div></div>
+</div>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>"Just send me some info"</h3><span class="arr">&#9654;</span></div>
+  <div class="card-body"><div class="sec">
+    <button class="copy-btn" onclick="copyText(this)">Copy</button>
+    <h4>Rebuttal</h4>
+    <div class="script">"I'd be happy to send you information. The thing is, the rates and options are really personalized based on your age, health, and state - so a brochure wouldn't give you an accurate picture.
+
+That's why it's actually quicker for me to walk you through it right now. It literally takes about 10 minutes, and at the end you'll know exactly what you qualify for and what it would cost. Can we just do that real quick?"
+
+<strong>If they insist:</strong> "No problem. Let me grab your email and I'll send over some general info. But I will follow up with you in a day or two to go over the specifics, because the info is really only useful when we can tailor it to your situation. Sound fair?"</div>
+  </div></div>
+</div>
+`;
+
+// ===== KB: UNDERSTANDING THE LEAD =====
+V.kb_understanding = `
+<h2>Understanding the Lead</h2>
+<p class="subtitle">What your leads experienced, what they filled out, and what to expect.</p>
+
+<a class="link-box" href="https://demo.goatleads.com" target="_blank" rel="noopener">
+  <h4>Try It Yourself: demo.goatleads.com</h4>
+  <p>Fill out the same lead capture forms your prospects see. Understanding their experience will make your opener more natural and your empathy more genuine.</p>
+</a>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>What Info the Lead Provided</h3><span class="arr open">&#9654;</span></div>
+  <div class="card-body show"><div class="sec"><div class="script">When a lead fills out a GOAT Leads form, they typically provide:
+
+<strong>Standard fields (all lead types):</strong>
+- Full name
+- Phone number
+- Email address
+- Date of birth
+- State
+
+<strong>Product-specific fields:</strong>
+- <strong>FEX:</strong> Interest in final expense / burial coverage
+- <strong>Mortgage Protection:</strong> Mortgage amount, monthly payment, home purchase/refi date
+- <strong>IUL:</strong> Retirement goal, monthly contribution range
+- <strong>Veterans:</strong> Military service status, VA benefits
+
+The lead saw an ad (usually on Facebook/social media), clicked through to a landing page, and filled out a form requesting information. <strong>They took action.</strong> Your job is to follow through on that action.</div></div></div>
+</div>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>TrustedForm & Premium Leads</h3><span class="arr">&#9654;</span></div>
+  <div class="card-body"><div class="sec"><div class="script">GOAT Leads uses <strong>TrustedForm-certified capture</strong> for premium leads. This means:
+
+- Every form submission is <strong>independently verified</strong> by a third party
+- A certificate is generated with the <strong>exact timestamp, IP address, and page URL</strong>
+- This proves a real person, at a real location, filled out a real form
+- It's the industry gold standard for lead verification and compliance
+
+<strong>What this means for you:</strong>
+When a lead says "I didn't fill this out," you can confidently say the submission is verified. GOAT can provide example ads and TrustedForm verification upon request to your account manager.
+
+<strong>What this does NOT guarantee:</strong>
+TrustedForm verifies the form was filled out - it doesn't guarantee the person will answer your call, be in a good mood, or buy a policy. That's your job as an agent.</div></div></div>
+</div>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>Serial Form-Fillers</h3><span class="arr">&#9654;</span></div>
+  <div class="card-body"><div class="sec"><div class="script">When someone starts researching insurance online, they don't fill out just one form. They typically fill out <strong>3-5 forms</strong> from different advertisers in the same browsing session.
+
+<strong>What this means:</strong>
+- Your lead may have already been called by 2-3 other agents
+- They may not remember which specific form was yours
+- They might say "I didn't fill this out" even though they did
+- The first agent to make a genuine connection wins
+
+<strong>How to use this to your advantage:</strong>
+Don't get defensive. Instead, acknowledge it: "I know you probably got a few calls - that's normal when you're researching online. The good news is I'm a licensed broker who works with ALL the top carriers, so I can actually compare options across the board for you. The other guys who called? They probably only represent one company."</div></div></div>
+</div>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>Setting Expectations</h3><span class="arr">&#9654;</span></div>
+  <div class="card-body"><div class="sec"><div class="script"><strong>Not every lead will answer.</strong> That's normal. Here are realistic expectations:
+
+<strong>Real-Time Leads:</strong>
+- 15-25% will answer on the first call
+- 30-40% will eventually make contact (across all attempts)
+- Of those, 30-40% will close
+
+<strong>Aged Leads:</strong>
+- 5-10% contact rate (lower, but they're cheaper)
+- Close rate is similar once you get them on the phone
+- Volume is the strategy - work more leads, close the same percentage
+
+<strong>The math:</strong>
+If you dial 100 real-time leads and contact 30, and close 10 of those - that's 10 sales. If your average commission is $500, that's $5,000 from 100 leads. The leads that didn't answer aren't "bad leads" - they're just part of the numbers game.
+
+<strong>Focus on what you can control:</strong> your dial count, your speed to lead, and your skill on the phone.</div></div></div>
+</div>
+`;
+
+// ===== KB: FOLLOW-UP CADENCE =====
+V.kb_cadence = `
+<h2>Follow-Up Cadence</h2>
+<p class="subtitle">The exact schedule for working a lead from Day 0 to Day 30.</p>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>The Complete Cadence</h3><span class="arr open">&#9654;</span></div>
+  <div class="card-body show"><div class="sec"><div class="script"><strong>Day 0 (Lead comes in):</strong>
+- Call immediately (within 5 minutes)
+- Leave voicemail if no answer
+- Send initial outreach text
+- Send first contact email
+
+<strong>Day 1:</strong>
+- Call in AM window (9-11)
+- Call in PM window (4-6)
+- Send follow-up text if no contact
+
+<strong>Day 2:</strong>
+- Call once (try a different time of day)
+- No voicemail, no text (let the missed call create curiosity)
+
+<strong>Day 3:</strong>
+- Call once
+- Leave voicemail (use the second voicemail script)
+- Send Day 3 follow-up text
+
+<strong>Day 5:</strong>
+- Call once
+- Text only if no answer
+
+<strong>Day 7:</strong>
+- Send follow-up email
+- Send the "reply 1 or 2" text
+- Call once
+
+<strong>Day 10:</strong>
+- Final call attempt
+- Leave final voicemail
+
+<strong>Day 14:</strong>
+- Send "last chance" email
+- Send closing text
+
+<strong>Day 30+:</strong>
+- Move to monthly drip sequence
+- One text or email per month with value-based content</div></div></div>
+</div>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>How Many Touches Before a Sale</h3><span class="arr">&#9654;</span></div>
+  <div class="card-body"><div class="sec"><div class="script">Industry data on when sales actually happen:
+
+<strong>2% of sales</strong> happen on the 1st contact
+<strong>3% of sales</strong> happen on the 2nd contact
+<strong>5% of sales</strong> happen on the 3rd contact
+<strong>10% of sales</strong> happen on the 4th contact
+<strong>80% of sales</strong> happen on the 5th-12th contact
+
+<strong>But here's the problem:</strong>
+44% of agents give up after 1 attempt.
+92% of agents give up after 4 attempts.
+
+That means the agents who keep going after attempt #4 have almost no competition for 80% of the sales. <strong>Persistence wins.</strong></div></div></div>
+</div>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>When to Stop (and What to Do Instead)</h3><span class="arr">&#9654;</span></div>
+  <div class="card-body"><div class="sec"><div class="script"><strong>Never mark a lead as "dead."</strong> Move them to a long-term nurture list instead.
+
+After your 2-week cadence is done:
+- Move the lead to a <strong>monthly drip</strong> sequence
+- Send one value-based touch per month (not "are you still interested?")
+
+<strong>Good drip content:</strong>
+- "Did you know the average funeral in <span class="ph">[State]</span> now costs $12,000+?"
+- Rate change alerts: "Rates just went up 3% this quarter - locking in now saves you..."
+- Seasonal: "As we head into the new year, a lot of families are reviewing their coverage..."
+- Educational: "3 things most people don't know about life insurance..."
+
+<strong>People's situations change.</strong> The lead who said "not interested" in January might have a health scare in March, or a grandchild born in June, or a new mortgage in September. Stay in front of them.</div></div></div>
+</div>
+`;
+
+// ===== KB: MINDSET & GOALS =====
+V.kb_mindset = `
+<h2>Mindset & Activity Goals</h2>
+<p class="subtitle">The numbers, the goals, and how to stay in the game.</p>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>Daily Dial Targets</h3><span class="arr open">&#9654;</span></div>
+  <div class="card-body show"><div class="sec"><div class="script"><strong>New agents (first 6 months):</strong>
+- <strong>Minimum 100 dials per day</strong>
+- This is non-negotiable. Volume is how you learn the scripts, get comfortable with objections, and build pipeline.
+- 100 dials should take 3-4 hours of focused dial time.
+
+<strong>Experienced agents with an existing book:</strong>
+- <strong>50-75 dials per day</strong> on new leads
+- Plus time for follow-ups, appointments, and servicing existing clients
+
+<strong>Track everything:</strong>
+- Total dials
+- Contacts (conversations)
+- Appointments set
+- Applications submitted
+- Policies issued
+- Use the Activity Tracker or your CRM - what gets measured gets improved.</div></div></div>
+</div>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>Expected Contact & Close Rates</h3><span class="arr">&#9654;</span></div>
+  <div class="card-body">
+    <div class="cols">
+      <div class="col">
+        <h4>Real-Time Leads</h4>
+        <ul>
+          <li><strong>Contact rate:</strong> 15-25%</li>
+          <li><strong>Appointment rate:</strong> 10-15% of contacts</li>
+          <li><strong>Close rate:</strong> 30-40% of appointments</li>
+          <li><strong>Example:</strong> 100 dials &rarr; 20 contacts &rarr; 3 appointments &rarr; 1 sale</li>
+        </ul>
+      </div>
+      <div class="col">
+        <h4>Aged Leads</h4>
+        <ul>
+          <li><strong>Contact rate:</strong> 5-10%</li>
+          <li><strong>Appointment rate:</strong> Similar once in conversation</li>
+          <li><strong>Close rate:</strong> 30-40% of appointments</li>
+          <li><strong>Example:</strong> 200 dials &rarr; 15 contacts &rarr; 2-3 appointments &rarr; 1 sale</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout">
+      <strong>Work backward from your income goal.</strong> If you want to make $10K/month and your average commission is $500, you need 20 sales. At a 5% overall conversion rate, that's 400 leads worked per month, or about 20 per workday. That's very achievable.
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>Staying Motivated Through Rejection</h3><span class="arr">&#9654;</span></div>
+  <div class="card-body"><div class="sec"><div class="script"><strong>Rejection is not failure. It's progress.</strong>
+
+Every "no" gets you one dial closer to a "yes." If your close rate is 5%, then every 20 dials you make, one of them is a sale. The other 19 aren't rejections - they're the cost of doing business.
+
+<strong>Practical strategies:</strong>
+
+1. <strong>Focus on activities, not outcomes.</strong> You can't control whether someone answers or buys. You CAN control how many dials you make and how well you deliver the script. Do the work and the results follow.
+
+2. <strong>Celebrate dials, not just sales.</strong> If you hit 100 dials today, that's a win regardless of how many picked up. The pipeline you're building today pays you next week and next month.
+
+3. <strong>Find an accountability partner.</strong> Pair up with another agent. Share your daily dial counts. Friendly competition and mutual accountability keep you dialing when you want to quit.
+
+4. <strong>Don't take it personally.</strong> The lead isn't rejecting YOU. They're reacting to their own circumstances - bad timing, tight budget, bad day. The same lead might say yes if you call back in a month.
+
+5. <strong>Remember why you're here.</strong> You're helping families protect themselves. Every policy you write means a family that won't be financially devastated by a tragedy. That matters.</div></div></div>
+</div>
+`;
+
+// ===== COMPARE =====
+V.compare = `
+<h2>Real-Time vs Aged Leads</h2>
+<p class="subtitle">The #1 question agents ask: "Do I use a different script?"</p>
+
+<div class="callout">
+  <strong>Short answer:</strong> The product script (FEX, MP, IUL, Vet) stays the same. What changes is the <strong>opener</strong> - how you introduce yourself and re-establish why you're calling. Real-time leads expect your call. Aged leads need a memory jogger.
+</div>
+
+<div class="cols">
+  <div class="col">
+    <h4>Real-Time Leads</h4>
+    <ul>
+      <li><strong>Timing:</strong> Just filled out a form (minutes/hours ago)</li>
+      <li><strong>Opener:</strong> Use the standard script opener for that product</li>
+      <li><strong>Mindset:</strong> They remember, they expect a call</li>
+      <li><strong>Urgency:</strong> Call within 5 minutes</li>
+      <li><strong>Fewer objections</strong> about "who is this?"</li>
+      <li><strong>Key phrase:</strong> "I'm getting back to you about the information you requested online..."</li>
+    </ul>
+  </div>
+  <div class="col">
+    <h4>Aged Leads</h4>
+    <ul>
+      <li><strong>Timing:</strong> Filled out a form weeks/months ago</li>
+      <li><strong>Opener:</strong> Use the Aged Lead Script opener, then transition to your product script</li>
+      <li><strong>Mindset:</strong> May not remember filling it out</li>
+      <li><strong>Urgency:</strong> Lower - focus on volume</li>
+      <li><strong>More objections</strong> - be ready with memory joggers</li>
+      <li><strong>Key phrase:</strong> "I tried to reach you a few months ago..."</li>
+    </ul>
+  </div>
+</div>
+
+<div class="card" style="margin-top:16px">
+  <div class="card-head" onclick="toggle(this)"><h3>The Aged Lead Opener</h3><span class="arr">&#9654;</span></div>
+  <div class="card-body">
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>Introduction</h4>
+      <div class="script">Hey <span class="ph">[Client Name]</span>! My name is <span class="ph">[Your Name]</span>, I'm one of the managers here at the final expense department for the state of <span class="ph">[State]</span>. How are you today?
+
+Perfect!
+
+I tried to reach you a few months ago. You were busy when I gave you a call. I just found some time to get back to you today.
+
+I have your email here as <span class="ph">[email]</span>. Is that correct?
+
+Perfect!
+
+You actually filled out one of our state surveys online at the time you were looking for more information on the state affordable life insurance programs, do you remember?</div>
+    </div>
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>If They Don't Remember</h4>
+      <div class="script">No worries! I understand it was a few months ago. Do you remember shopping around for life insurance quotes online at that time?</div>
+    </div>
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>If They Still Don't Remember</h4>
+      <div class="script">Maybe you were looking to:
+1. Purchase additional coverage at the best price
+2. Cover a loved one
+3. Or set your grandkids up for success with life insurance.</div>
+    </div>
+    <div class="callout">After re-engaging the prospect, transition into your product script (FEX, MP, IUL, or Vet) starting from the discovery/qualification section.</div>
+  </div>
+</div>
+`;
+
+// ===== FEX #1 =====
+V.fex1 = `
+<h2>FEX Script #1</h2>
+<p class="subtitle">Final Expense - Full call flow from opener to close</p>
+<button class="copy-all-btn" onclick="copyAll(this)">Copy Full Script</button>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>Opening</h3><span class="arr open">&#9654;</span></div>
+  <div class="card-body show">
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>Introduction</h4>
+      <div class="script">Hi <span class="ph">[Name]</span>? Hi <span class="ph">[Name]</span>, This is <span class="ph">[Your Name]</span>. I'm getting back to you from the benefits center regarding the information you requested online for the State Regulated Life Insurance.
+
+You listed your date of birth as <span class="ph">[DOB]</span> is that correct? Perfect, so I'm just the licensed medical underwriter that was assigned to review this information with you. We are doing everything virtually now so it just takes about 10 minutes. Do you have a pen and paper handy?
+
+(if no - Okay, no problem, I can wait a minute while you grab one)
+(if still no - Okay, what time do you get home from work? etc.)</div>
+    </div>
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>Credentials</h4>
+      <div class="script">Okay, I'll have you write down my information first. My name is <span class="ph">[Your Name]</span> and my license number for the state of <span class="ph">[State]</span> is #<span class="ph">[License #]</span>. Now, that is my license # for the <span class="ph">[State]</span> Department of Insurance. They do require I leave that with you in case you need to look me up for any reason.
+
+Now when you filled this out, were you looking to get coverage on just yourself or did you have a spouse as well? Okay, perfect.</div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>Positioning & Discovery</h3><span class="arr">&#9654;</span></div>
+  <div class="card-body">
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>Positioning Statement</h4>
+      <div class="script">Now the way this works is very simple. My job is a little different from the sales reps they normally would send out to you. I'm on the medical side of things so I'm going to ask you a couple questions, and depending on how you answer those, it will give me a good idea of which companies will decline you and which ones might approve you.
+
+From there, I will be able to look at all of the state regulated options and we will see which company is offering you the best rate. And then at that point, we will submit an application up to the home office to see if we can even get you approved for coverage.
+
+So, no decisions, commitments, or payments are made today, because before you can buy the insurance, you have to get approved for it first. Does that make sense?</div>
+    </div>
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>Needs Discovery (3 Reasons)</h4>
+      <div class="script">Now people typically fill this out for one of 3 reasons:
+1. To cover their funeral and final expenses
+2. To cover large loans like maybe a mortgage
+3. For legacy purposes or income replacement
+
+What was your main concern?
+
+(TRANSITION TO FINANCIAL INVENTORY SHEET)</div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>Product Presentation</h3><span class="arr">&#9654;</span></div>
+  <div class="card-body">
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>Whole Life</h4>
+      <div class="script">Okay, <span class="ph">[Client Name]</span>, so what we are going to look at for you today is a Whole Life policy.
+
+- This lasts for your whole life, so it doesn't matter when, where or how you die, it is guaranteed to pay out to your family
+- The premiums will never increase on you, so they will remain level and lock you in at your age and health you are at now
+- There will be living benefits, so if you ever become critically, chronically or terminally ill, you will have access to some of the benefit amount to help you out while you are alive. It will also build a cash value over time, nothing to make you rich, but think of it like an emergency savings account for you.</div>
+    </div>
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>Cash Back Term</h4>
+      <div class="script">This program is the most popular type of coverage because it comes with a 100% guarantee. Now during the <span class="ph">[15, 20, 30 year term]</span>, if anything happens to you, it will pay out the entire benefit to your family. However, if nothing happens to you, and you outlive the policy, they will return 100% of the money you had put into it. So, it acts as a savings account for you.
+
+And lastly it has built in living benefits which means if you have any critical, chronic, or terminal illnesses, things such as heart attack, stroke, cancer, this will actually pay out to you while you're still here to help cover living expenses, medical bills or anything else you may need. Does that make sense?</div>
+    </div>
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>Term</h4>
+      <div class="script">Now luckily you're still in the age range to be able to qualify for this, this is a big deal because this is the most popular type of coverage. With this plan you get a lot more coverage for a lot cheaper price. Now the cool thing about this plan is if we are able to get you approved for it, it locks in your rates. So you don't have to worry about the price going up every 5 years. It will stay the exact same the entire time. Does that make sense?</div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>Gold / Silver / Bronze Close</h3><span class="arr">&#9654;</span></div>
+  <div class="card-body">
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>Presenting Options</h4>
+      <div class="script">Okay, now I am going to have you write down the words Gold, Silver and Bronze on your paper.
+
+The Gold option is <span class="ph">[coverage amount]</span>, the Silver would be <span class="ph">[coverage amount]</span> and the Bronze would be <span class="ph">[coverage amount]</span>.
+
+The Gold would be <span class="ph">[monthly $]</span>, the Silver would be <span class="ph">[monthly $]</span> and the Bronze would be <span class="ph">[monthly $]</span>.
+
+Now, like I said before. Unfortunately, I don't get to make the final decision. The insurance company does that. So we still have to submit your application to the home office to see if you can even qualify. But if you are able to qualify, which option makes the most sense for you?</div>
+    </div>
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>Transition to Application</h4>
+      <div class="script">Alright so what I'm gonna do is run a quick application for you - from there you'll be able to pick a date down the line that you would want this to take effect for the family, so no payments are made today. This will just allow us to see if you're approved and then you'll be able to receive all the paperwork in the mail, review all the details of the policy, and make sure that this is the right coverage for you.</div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>Application & Objection Handling</h3><span class="arr">&#9654;</span></div>
+  <div class="card-body">
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>Social Security Objection</h4>
+      <div class="script">(when asking for social) Okay, great, do you have your social memorized?
+
+(if they give objection) Now this is simplified issue, so what that means is they aren't going to send out a nurse to draw your blood or make you pee in a cup, instead they will just run a prescription check through the Medical Information Bureau to see if you are healthy enough to qualify. Does that make sense?</div>
+    </div>
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>Banking Info</h4>
+      <div class="script">(when asking for banking) Okay, now provided you qualify for the coverage, when would you want it to take effect? Beginning, middle or end of the month? Great, and would it be from a business or personal account? And what's the name of the bank?
+
+(look up their routing number) Okay, perfect, so it looks like we do work with <span class="ph">[bank name]</span>, I have the routing number here, do you have something in front of you that I can verify this with?
+
+(have them get a blank check or pull up the info on a mobile app and then read the routing number, verify it is correct) Okay, and then the account number?</div>
+    </div>
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>Closing Out the Call</h4>
+      <div class="script">Have them write down:
+- Carrier name
+- Coverage amount, premium, effective date
+- Your phone number
+- Let them know you are their broker for life, and if they need anything or have any questions about their coverage to reach out to you.</div>
+    </div>
+  </div>
+</div>
+`;
+
+// ===== FEX #2 =====
+V.fex2 = `
+<h2>FEX Script #2</h2>
+<p class="subtitle">Final Expense - Alternative approach with deeper discovery</p>
+<button class="copy-all-btn" onclick="copyAll(this)">Copy Full Script</button>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>Opening</h3><span class="arr open">&#9654;</span></div>
+  <div class="card-body show">
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>Introduction</h4>
+      <div class="script">Hey <span class="ph">[Prospect Name]</span>,
+This is <span class="ph">[Your Name]</span> with Senior Benefit Services. I'm just getting back to you about your online request for information on state-approved Final Expense plans for folks living in <span class="ph">[State]</span>.
+
+I'm finishing up your request and just need to verify a couple quick things first.
+
+Can you confirm your current address for me?
+
+Also, are you somewhere you can grab a pen and some paper real quick?
+Go ahead and get that ready, I'll wait.
+
+Now, is this just for you or should I include a spouse or partner as well?</div>
+    </div>
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>Credentials</h4>
+      <div class="script">Great, before we dive in, let me give you my contact info real fast:
+1. My name is <span class="ph">[Your Name]</span>.
+2. My state license number is <span class="ph">[Your producer number]</span>. You can double-check it on the state's insurance website if you'd like.
+3. (Send your digital business card if you have one.)
+
+Is there a good phone number or email where I can send you more info while we're talking?</div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>Pulling Out the WHY</h3><span class="arr">&#9654;</span></div>
+  <div class="card-body"><div class="sec">
+    <button class="copy-btn" onclick="copyText(this)">Copy</button>
+    <h4>Finding Their Motivation</h4>
+    <div class="script">Before we get started, <span class="ph">[Prospect Name]</span>, what made you start thinking about getting coverage?
+
+A lot of people start looking into this after losing someone close or are having a health scare. Would you mind sharing what's been on your mind?</div>
+  </div></div>
+</div>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>Discovery Questions</h3><span class="arr">&#9654;</span></div>
+  <div class="card-body">
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>Core Discovery</h4>
+      <div class="script">Now that I have a better idea of where you're coming from, I've got a few quick questions, and then I'll explain the next steps.
+
+1. Do you have any life insurance in place right now?
+2. What made you want to look into coverage?
+3. If you do have a policy, when does it end?
+
+Usually, there are three main types of coverage people look at:
+1. Have you heard of term life insurance before?
+2. How about accidental death coverage?
+3. And are you familiar with whole life insurance?
+
+Have you been trying to get coverage for a while, or is this your first time checking it out?</div>
+    </div>
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>If They Don't Have Coverage</h4>
+      <div class="script">Have you had any trouble getting approved before, or finding something affordable?
+Are you working full-time or retired? If you're on SSI, is it going into your bank account or onto a Direct Express card?
+
+Tell me which one sounds most like your situation:
+1. They don't have any coverage at all.
+2. They don't have enough coverage.
+3. They're worried about lost income for their family.
+4. They want to leave something behind for someone they love.
+Which one fits you best?
+
+Who would be the one handling your final expenses if something happened?
+What's their name?
+Why is it important to you to have this protection in place?
+
+Just so you know, <span class="ph">[Prospect Name]</span>, the coverage we're talking about helps with funeral costs, cremation expenses, debts, and gives your loved ones some extra breathing room. Does that sound like what you're looking for?</div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>Medical Questions & Options</h3><span class="arr">&#9654;</span></div>
+  <div class="card-body">
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>Positioning</h4>
+      <div class="script">Here's how it'll work. As a licensed broker here in <span class="ph">[State]</span>, my job is to ask a few medical questions and learn a bit more about you.
+
+Then I'll match you with the companies most likely to approve you based on what you tell me. Once we find some good options, we'll pick the best fit and submit your application. Just a heads-up, I can't promise approval today - the insurance company makes the final call.
+
+Does that make sense?
+
+If we find something affordable, I assume you'd want to apply to see if you qualify?</div>
+    </div>
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>Medical Questions</h4>
+      <div class="script">1. Have you ever been diagnosed with congestive heart failure, cancer, Alzheimer's, dementia, AIDS, HIV, do you use oxygen, or had an organ transplant?
+2. Any surgeries or procedures in the last 5 years? Any diabetes, COPD, bipolar disorder, or schizophrenia? Any heart attacks or strokes?
+3. Have you ever been treated for alcohol or drug issues? Any felonies or DUIs?
+
+(Review medications.)</div>
+    </div>
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>Presenting Options</h4>
+      <div class="script">Thanks, <span class="ph">[Prospect Name]</span>. Based on what you've told me, here are a few options. Please write these down:
+1. Coverage Option 1
+2. Coverage Option 2
+3. Coverage Option 3
+
+This coverage is called <span class="ph">[Coverage Type]</span>, and it's popular because:
+1. Your benefits never cancel as long as premiums are paid.
+2. Your price never goes up.
+3. Your payout goes straight to your family tax-free.
+4. It builds some cash value over time.
+5. You'll always have support from your dedicated agent (me).
+
+Now for Option 1, here's the monthly price. For Option 2, here's the price. For Option 3, here's the price.
+
+(Really focus here on who they're protecting - their spouse, kids, grandkids, etc.)</div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>Closing & Two Promises</h3><span class="arr">&#9654;</span></div>
+  <div class="card-body">
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>Close</h4>
+      <div class="script">Like we talked about, the insurance company has the final say. We'll submit the application and find out if you're approved.
+
+If you are, which amount would you prefer to leave behind for your family: <span class="ph">[Option 1]</span>, <span class="ph">[Option 2]</span>, or <span class="ph">[Option 3]</span>?
+
+Awesome. I'll do everything I can to get you approved.
+
+The application only takes about 5 minutes. Let's get it started. Can you spell your first name for me?</div>
+    </div>
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>Concluding - Two Promises</h4>
+      <div class="script">Now <span class="ph">[Prospect Name]</span>, I take helping you very seriously. It's important that you're fully clear on the protection you're setting up today.
+
+Our two goals were:
+- Find a plan that protects your family.
+- Make sure it's affordable.
+Would you agree that we did that today?
+
+Before we hang up, I'm going to ask you to make me two promises in return:
+
+1. If your budget ever gets tight, promise to call me so we can adjust things. I don't want you to lose the value you've built.
+2. If someone tries to offer you a different plan, promise to talk to me first. If it's better, I'll help you switch. If not, I'll explain why.
+
+Fair enough?</div>
+    </div>
+  </div>
+</div>
+`;
+
+// ===== AGED =====
+V.aged = `
+<h2>Aged Lead Script</h2>
+<p class="subtitle">Use this opener for any aged lead, then transition to your product script.</p>
+<button class="copy-all-btn" onclick="copyAll(this)">Copy Full Script</button>
+
+<div class="callout">This script is an <strong>opener only</strong>. After re-engaging the prospect, transition into your standard FEX, MP, IUL, or Vet script for the rest of the call.</div>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>Full Aged Lead Opener</h3><span class="arr open">&#9654;</span></div>
+  <div class="card-body show">
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>Introduction</h4>
+      <div class="script">Hey <span class="ph">[Client Name]</span>! My name is <span class="ph">[Your Name]</span>, I'm one of the managers here at the final expense department for the state of <span class="ph">[State]</span>. How are you today?
+
+Perfect!
+
+I tried to reach you a few months ago. You were busy when I gave you a call. I just found some time to get back to you today.
+
+I have your email here as <span class="ph">[email]</span>. Is that correct?
+
+Perfect!
+
+You actually filled out one of our state surveys online at the time you were looking for more information on the state affordable life insurance programs, do you remember?</div>
+    </div>
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>If They Don't Remember</h4>
+      <div class="script">No worries! I understand it was a few months ago. Do you remember shopping around for life insurance quotes online at that time?</div>
+    </div>
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>If They Still Don't Remember</h4>
+      <div class="script">Maybe you were looking to:
+1. Purchase additional coverage at the best price
+2. Cover a loved one
+3. Or set your grandkids up for success with life insurance.</div>
+    </div>
+    <div class="callout">Once re-engaged, transition to your product script: FEX #1 or #2, MP #1 or #2, IUL #2 or #3, or Vet #1 or #2 - starting from the discovery/qualification section.</div>
+  </div>
+</div>
+`;
+
+// ===== MP #1 =====
+V.mp1 = `
+<h2>Mortgage Protection Script #1</h2>
+<p class="subtitle">Comprehensive MP script with credentials, discovery, and close</p>
+<button class="copy-all-btn" onclick="copyAll(this)">Copy Full Script</button>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>Opening & Credentials</h3><span class="arr open">&#9654;</span></div>
+  <div class="card-body show">
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>Introduction</h4>
+      <div class="script">My name is <span class="ph">[Your Name]</span>. I am the senior underwriter that was assigned to go over the mortgage protection with you. How are you doing today?
+
+I wanted to start off by verifying the information I have here. Your mortgage is for <span class="ph">[$amount]</span>, is that correct? And you're paying <span class="ph">[$monthly]</span>/month, is that also correct? Okay, perfect.
+
+(Make sure spouse, co-borrower, significant other, or anyone relevant to the mortgage is present for the appointment)
+
+Okay, perfect. I am going to send you over my credentials now.</div>
+    </div>
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>Credentials Speech</h4>
+      <div class="script">Once again, my name is <span class="ph">[Your Name]</span> and I'm the State Underwriter for the state of <span class="ph">[STATE]</span>. Before we get started, I did show/text you my State license that's on my badge for your records. Since we handle sensitive client information like Social Security numbers, bank account numbers, etc, the state requires me to provide you my license for your protection so that you can verify that you are speaking to a licensed agent and field underwriter.
+
+In fact, in order for me to do what I do, I am required to go through an extensive FBI background check and maintain several certificates as a requirement for the license. With that said, I'm fully vetted by the FBI, the federal government and state government, as well as the individual insurance carriers I'm partnered with - all for your protection.</div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>Positioning & Discovery</h3><span class="arr">&#9654;</span></div>
+  <div class="card-body">
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>What You Do</h4>
+      <div class="script">I am an underwriter licensed through the state of <span class="ph">[State]</span> and I work with all of the A-rated insurance carriers that offer mortgage protection plans. It's my job to be the eyes and ears for the insurance carriers. These carriers do not require any medical exams, blood draws or urine samples. They just have me talk to you to verify your eligibility and go over your options with you.
+
+So, I just need to ask you some questions to see what type of mortgage protection may make sense for you, to see what you'll qualify for, and what's going to make sense for your budget. If we find something that does make sense for your situation, then the only thing we can do today is put in an application to see if the insurance carrier will approve you. Make sense?</div>
+    </div>
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>Explain Mortgage Protection</h4>
+      <div class="script">So do you guys know what mortgage protection is? (let them explain)
+
+Right, so mortgage protection is the insurance that homeowners take for the purpose of covering the mortgage God forbid something were to happen to you. Depending on what you qualify for, that could mean paying off the mortgage, illness protection, or at the very least providing a substantial financial cushion to your beneficiaries.
+
+Does that sound like something your family needs? Tell me more about that. What would be your main concerns for your family if something were to happen to either of you?</div>
+    </div>
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>Financial Discovery</h4>
+      <div class="script">What do you both do for a living?
+What is each of your individual, net income per month?
+(Can one or both afford the mortgage on a single income? Use this to solidify the need.)
+
+Do you have any life insurance? Term or whole life? How much coverage? When does it expire? What's it for?
+(Life insurance is for leaving a nest egg - not for paying off the mortgage!)
+
+Next: DOB, Height/weight, health conditions, medications.</div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>Options & Close</h3><span class="arr">&#9654;</span></div>
+  <div class="card-body">
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>Present 3 Options</h4>
+      <div class="script">Put together 3 options (lowest around $80). Okay, do you have your pen and paper ready?
+
+We will start with <span class="ph">[husband's]</span> options first. (Give 3 options)
+Next are <span class="ph">[wife's]</span> options. (Give 3 options)
+
+Give them a minute to absorb. Let them know you can adjust for budget.
+
+"Okay guys, so which of these options would be the most suitable and affordable that you'd like to make the application for?"</div>
+    </div>
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>"Think About It" Rebuttal</h4>
+      <div class="script">I completely understand you want to think about it. The insurance carrier actually gives you a month to do that. Do you think this protection makes sense for your family? Do you think you most likely want to have this coverage?
+
+Our office is very busy, we have about 500-1000 families to get to every week, so the chances of us getting together again is pretty slim. The carrier gives you a full 30 days to review, ask questions, and make changes. Even if you decide you don't want it, they will refund any monies paid within the first month.</div>
+    </div>
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>After Approval</h4>
+      <div class="script">Congratulations! You were approved. You'll get your policy in the mail in about 7-10 business days.
+
+If you get any other letters about mortgage protection, you can disregard it. If anyone else calls, let them know you're all taken care of. Sometimes salespeople will call and say things like "your file was flagged for review" - it's all just sneaky sales tactics.
+
+I got you set up with Americo - they specialize in mortgage protection with 100% for death, terminal, critical, and chronic illness AND 100% cash back. Save my number - I'll be your family's go-to person for all insurance needs.</div>
+    </div>
+  </div>
+</div>
+`;
+
+// ===== MP #2 =====
+V.mp2 = `
+<h2>Mortgage Protection Script #2</h2>
+<p class="subtitle">Social media lead approach with emotional discovery</p>
+<button class="copy-all-btn" onclick="copyAll(this)">Copy Full Script</button>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>Opening</h3><span class="arr open">&#9654;</span></div>
+  <div class="card-body show"><div class="sec">
+    <button class="copy-btn" onclick="copyText(this)">Copy</button>
+    <h4>Introduction</h4>
+    <div class="script">Hey <span class="ph">[Name]</span>? Hey <span class="ph">[Name]</span>, this is <span class="ph">[Your Name]</span>. I'm getting back to you about the form that you filled out on Social Media looking for information on mortgage protection. I'm just the medical underwriter that got assigned to the case.
+
+Now a moment ago, I sent over my credentials to you in a text message, you should've received both my driver's license and my insurance license, did you receive that?
+
+Okay perfect. I am required by the state to send over my credentials, that way you have a copy for your records. Now are you familiar with mortgage protection?</div>
+  </div></div>
+</div>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>Explain Mortgage Protection</h3><span class="arr">&#9654;</span></div>
+  <div class="card-body"><div class="sec">
+    <button class="copy-btn" onclick="copyText(this)">Copy</button>
+    <h4>Full Explanation</h4>
+    <div class="script">Mortgage protection is a form of insurance that most homeowners these days are putting in place usually right after they buy or refinance a home, that way, God forbid if something were to happen to you yesterday - and I'm big on yesterday cause I don't wanna speak things into existence - but if something were to happen like a death, disability, or a critical illness such as heart attack, cancer, stroke, well then money would come into the family today to either help pay off the home, pay down the mortgage, or make monthly payments to help aid in transition.
+
+My job is pretty simple. I'll ask you just two minutes of health questions, because not everyone is eligible. And then two minutes of financial questions, because it doesn't make any sense to be insurance-rich and cash-poor. We need to find a plan that makes good financial sense and doesn't take food off the table.
+
+If I'm able to find you a plan that you're healthy enough to qualify for, and it fits easily into the budget, I'll help you submit a request for coverage. Does that sound fair?</div>
+  </div></div>
+</div>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>Emotional Discovery & Benefits</h3><span class="arr">&#9654;</span></div>
+  <div class="card-body">
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>Financial Inventory Question</h4>
+      <div class="script">Now, <span class="ph">[Name]</span>, this is always the most awkward part of my job but let's say God forbid something were to happen to your health - maybe it's critical illness like heart attack, cancer, stroke, or a permanent disability - bottom line it prevents you from going back to work and providing an income, what would that look like for you and <span class="ph">[Spouse]</span> as far as trying to pay the mortgage and maintain your current lifestyle?</div>
+    </div>
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>Benefits Explanation</h4>
+      <div class="script">This would be the reason to have mortgage protection. It's just to make sure that if anything ever happened to you, either the house would get paid off or your income would be 100% replaced.
+
+Mortgage protection will act a lot like life insurance - it'll be attached to you, NOT to the loan or the home. So if you ever refinance or move, the coverage stays active as long as premiums are paid.
+
+All these programs are non-medical - they just pull your medical records and look at medications. If they approve you, you get 30 days to make your final decision. Nothing is set in stone today.
+
+The best part: if you never use the coverage, they send you a full refund on all premiums tax-free. It's like a forced savings account for homeowners - if anything happens, they pay off your home. If nothing happens, you get all the money back around retirement age.</div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>Close</h3><span class="arr">&#9654;</span></div>
+  <div class="card-body"><div class="sec">
+    <button class="copy-btn" onclick="copyText(this)">Copy</button>
+    <h4>Closing Question</h4>
+    <div class="script">Now, obviously, we cannot make a decision today anyway just because I still don't even know whether or not the insurance company would even approve you but if they were to approve you, which option do you think would make the most sense for you?</div>
+  </div></div>
+</div>
+`;
+
+// ===== IUL #2 =====
+V.iul2 = `
+<h2>IUL Script #2</h2>
+<p class="subtitle">IUL script with call, voicemail, and text flows</p>
+<button class="copy-all-btn" onclick="copyAll(this)">Copy Full Script</button>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>If Client Answers</h3><span class="arr open">&#9654;</span></div>
+  <div class="card-body show"><div class="sec">
+    <button class="copy-btn" onclick="copyText(this)">Copy</button>
+    <h4>Live Call Script</h4>
+    <div class="script">Hey <span class="ph">[Name]</span>, this is <span class="ph">[Your Name]</span>. I work with <span class="ph">[Company]</span>. Got the request you sent in about the IULs and being your own bank. It's where you put your goal down as "<span class="ph">[enter goal]</span>." How's it going? Cool cool.
+
+Well, hey, what we typically do is ask a few questions to help us get on the same page. Then, we'll schedule a Zoom call to run through different options together.
+
+Questions:
+1. Lots of different things we can do with life insurance for retirement, what's your primary goal with this?
+2. And it is a life insurance vehicle, any health issues at all?
+3. What would be an estimated monthly amount you'd be comfortable with?
+4. Any significant others you want in the meeting?
+
+Let me shoot over a calendar invite so we have something on the calendars. Can you click the "YES" button so we both get a reminder?
+
+Looking forward to chatting on <span class="ph">[date and time]</span>.</div>
+  </div></div>
+</div>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>If Client Does Not Answer</h3><span class="arr">&#9654;</span></div>
+  <div class="card-body">
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>Voicemail</h4>
+      <div class="script">Hey <span class="ph">[Name]</span>. This is <span class="ph">[Your Name]</span>. I work with <span class="ph">[Company]</span>. We just received the request you had sent in through our social media accounts about "<span class="ph">[ENTER GOAL]</span>." Nice to meet you. We typically ask a few questions to help us get on the same page. When you get the message, just give a ring back so we can connect.</div>
+    </div>
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>Text Message</h4>
+      <div class="script">Hey <span class="ph">[Name]</span>. This is <span class="ph">[Your Name]</span> with <span class="ph">[Company]</span>. We just received the request you had sent in about "<span class="ph">[ENTER GOAL]</span>." Nice to meet you. We typically ask a few questions to help us get on the same page. Then we'll hop on a Zoom to run through some options together. Do you prefer text or a quick call?</div>
+    </div>
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>If They Prefer Text</h4>
+      <div class="script">Ok, perfect. A few quick questions:
+1. It is a life insurance vehicle. Any health issues? Stroke, heart attack, cancer, lung issues, hospitalizations last 5 years? DUIs?
+2. What is your primary goal with this/retirement?
+3. A ballpark of monthly contributions? Helps us draw something up.
+4. Any significant others you want involved in the meeting?</div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>Follow-Up Sequence</h3><span class="arr">&#9654;</span></div>
+  <div class="card-body">
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>Day 1 Follow-Up</h4>
+      <div class="script">"Hey <span class="ph">[Name]</span>. Just wanted to make sure you got our last message?"
+
+"Hey <span class="ph">[Name]</span>. Wanted to touch base to see if you still wanted to chat about your retirement options with the IUL."</div>
+    </div>
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>Day 3 Follow-Up</h4>
+      <div class="script">"Hey <span class="ph">[Name]</span>. If you're still interested in learning more about max-funded IULs for retirement, just reply "1" so we can connect or "2" if not.</div>
+    </div>
+  </div>
+</div>
+`;
+
+// ===== IUL #3 =====
+V.iul3 = `
+<h2>IUL Script #3</h2>
+<p class="subtitle">Direct IUL approach with Zoom close</p>
+<button class="copy-all-btn" onclick="copyAll(this)">Copy Full Script</button>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>Full Script</h3><span class="arr open">&#9654;</span></div>
+  <div class="card-body show">
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>Opening</h4>
+      <div class="script">Hello, <span class="ph">[CLIENT NAME]</span>. My name is <span class="ph">[Your Name]</span>. I am giving you a call about the IUL (index universal life) request you made. Were you more interested in the tax-free cash value, tax-free retirement, or protection?
+
+Okay great, My job is to help design this for you and go through and explain how it works and see if it is something you can even get approved for; You can't just buy it off the shelf like a loaf of bread.</div>
+    </div>
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>IUL Explanation</h4>
+      <div class="script">Based on your goal the way it is supposed to be structured is on a min death max cash value which just means the goal is to have the least amount of insurance required by the IRS to get all the tax benefits in the program.
+
+The programs have what's called a zero % floor which means you can't go backward in the policy. Also, it follows the index so you will earn somewhere between 5-15%. Everything that you put in and gain is tax-free. Does that make sense?
+
+What the insurance company is looking at is insurability which is why I was saying not everyone can get it. With that being said the carrier looks at the last 10 years of health history and criminal and driving record.</div>
+    </div>
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>Qualifying Questions</h4>
+      <div class="script">What medications have you been prescribed even if you haven't taken them?
+
+Felonies, Probation or DUI's?
+
+Okay, I have to include anything in your record or they will auto-decline it for not disclosing it so I just want to make sure I have everything...
+
+Everything is built around your budget and most people put somewhere between 5-10% of their monthly income into the policy. What would make sense for you per month?</div>
+    </div>
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>Transition to Zoom</h4>
+      <div class="script">I don't know about you but I am more of a visual person so what I am going to do is send you a quick Zoom link to show you and go over the illustration and we will use that illustration to apply to the carrier since they do have to figure out if it is something they will let you participate in.
+
+SEND ZOOM LINK AND CALL UPLINE FOR HELP IF NEEDED</div>
+    </div>
+  </div>
+</div>
+`;
+
+// ===== IUL TERMINOLOGY =====
+V.iulterms = `
+<h2>IUL Terminology</h2>
+<p class="subtitle">Key terms and concepts every agent should know.</p>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>Core IUL Terms</h3><span class="arr open">&#9654;</span></div>
+  <div class="card-body show">
+    <div class="terms">
+      <div class="term"><h5>IUL - Indexed Universal Life</h5><p><strong>Indexed:</strong> Cash value grows LINKED (not invested in) an index like S&P 500. Market up = you're up. Market tanks = floor protects you.<br><strong>Universal:</strong> Flexible. Can adjust contributions and death benefit.<br><strong>Life:</strong> Life insurance. Death benefit is the collateral.</p></div>
+      <div class="term"><h5>MEC - Modified Endowment Contract</h5><p>Over-fund the policy and it becomes a MEC - you lose the tax advantage. Loans become taxable + possible penalties before age 60. MEC Premium = max you can put in per year. Higher Death Benefit = Higher MEC limit.</p></div>
+      <div class="term"><h5>Min Death Benefit, Max Cash Value</h5><p>ALWAYS structure this way for max cash growth. "IRS, I want to put in $X/month - what's the smallest insurance I need?" Higher DB = Lower Cash Value. Lower DB = Higher Cash Value.</p></div>
+      <div class="term"><h5>Participation Rate</h5><p>What % of gains do you see? If index went up 10% and PAR Rate is 120%, your account gets credited 12%.</p></div>
+      <div class="term"><h5>Floor</h5><p>How LOW can your money go? Typically 0% in an IUL. Markets tank, your account won't go belly up. Higher floor = lower cap (more guarantees = less growth).</p></div>
+      <div class="term"><h5>Cap</h5><p>How HIGH can your money go? S&P 500 strategies often cap at ~9-10%. National Life Group's US Pacesetter has NO cap.</p></div>
+      <div class="term"><h5>Accumulated Value</h5><p>Like your house VALUE - grows on entire amount even with loans out.</p></div>
+      <div class="term"><h5>Surrender Value</h5><p>Like your home EQUITY - how much you can actually access. THIS IS YOUR ACCESSIBLE CASH.</p></div>
+      <div class="term"><h5>Loans vs Withdrawals</h5><p>ALWAYS take loans (tax-free). Withdrawals take money OUT permanently - portion may be taxable above cost basis.</p></div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>Death Benefit Options</h3><span class="arr">&#9654;</span></div>
+  <div class="card-body">
+    <div class="terms">
+      <div class="term"><h5>Level Death Benefit (Option A)</h5><p>Slightly higher DB out of the gate. Good for: funding less than 10 years, age 55+, or people wanting to dump extra money in from time to time.</p></div>
+      <div class="term"><h5>Increasing Death Benefit</h5><p>Conventional way to max fund. DB starts MUCH lower, increases yearly. Lower cost of insurance = more growth. Use for $1K-2K+/month contributions.</p></div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>Loan Types</h3><span class="arr">&#9654;</span></div>
+  <div class="card-body">
+    <div class="terms">
+      <div class="term"><h5>Participating Variable Loan</h5><p>Your loan amount still grows inside the account. Rate fluctuates with market. Best when index outperforms the loan rate.</p></div>
+      <div class="term"><h5>Participating Fixed Loan</h5><p>Money still grows inside account. Rate is locked in. Typically a few points higher than variable.</p></div>
+      <div class="term"><h5>Standard (Wash) Loan</h5><p>They credit you back ~the same rate as the loan interest, nearly zeroing out the cost. Better when markets are tanking.</p></div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>Riders & Tax Codes</h3><span class="arr">&#9654;</span></div>
+  <div class="card-body">
+    <div class="terms">
+      <div class="term"><h5>Lifetime Income Benefit Rider</h5><p>Guarantees tax-free income for life. Turn on at age 60, must have policy 10+ years. Can toggle on/off.</p></div>
+      <div class="term"><h5>Balance Sheet Benefit Rider</h5><p>Eliminates difference between Accumulated Value and Surrender Value in first 10 years. Good for HNW clients.</p></div>
+      <div class="term"><h5>Overloan Protection Rider</h5><p>Prevents policy from lapsing if you take a huge loan and markets tank. Comes standard with NLG.</p></div>
+      <div class="term"><h5>Tax Codes</h5><p><strong>101(A):</strong> Death Benefit transfers tax-free.<br><strong>72E:</strong> Money grows tax-free inside life insurance.<br><strong>7702:</strong> Money accessible tax-free via policy loans.</p></div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>IUL vs Other Retirement Vehicles</h3><span class="arr">&#9654;</span></div>
+  <div class="card-body">
+    <div class="terms">
+      <div class="term"><h5>Roth IRA</h5><p><strong>Pros:</strong> Tax-free after 59.5, can withdraw contributions early.<br><strong>Cons:</strong> Must wait until 59.5, 10% early penalty, income limits (~$120-150K phaseout).</p></div>
+      <div class="term"><h5>401K</h5><p><strong>Pros:</strong> Employer match (FREE money!), higher limit ~$23K/yr.<br><strong>Cons:</strong> Tax-deferred (you'll pay later), market exposure. Contribute up to the match, then consider IUL.</p></div>
+      <div class="term"><h5>IUL Advantages</h5><p>Tax-free growth, loose income restrictions, guaranteed tax-free retirement, death benefit, living benefits, market upside with downside protection.</p></div>
+      <div class="term"><h5>IUL Disadvantages</h5><p>Fee heavy in first 10 years, death benefit cost, not true market exposure (indexed, not invested).</p></div>
+    </div>
+  </div>
+</div>
+`;
+
+// ===== VET #1 =====
+V.vet1 = `
+<h2>Vet Lead Script #1</h2>
+<p class="subtitle">Veterans insurance script with detailed medical questions</p>
+<button class="copy-all-btn" onclick="copyAll(this)">Copy Full Script</button>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>Opening & Discovery</h3><span class="arr open">&#9654;</span></div>
+  <div class="card-body show">
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>Introduction</h4>
+      <div class="script">Hey <span class="ph">[Name]</span> this is <span class="ph">[Your Name]</span> getting back to you about the request you put in for the veterans insurance/mortgage protection. I have your birthdate as <span class="ph">[DOB]</span>.
+
+I'm the specialist assigned to run through that information with you. Do you have a couple minutes?
+
+Were you looking for coverage because you didn't have any or you didn't think you had enough?
+
+Typically people are looking for coverage for 1 of 3 reasons:
+1. To cover final expenses like burial or cremation
+2. To cover a mortgage and bills
+3. To leave a legacy and replace the loss of income
+
+Perfect, I'm a broker. I work with all the top insurance agencies like Mutual of Omaha, Transamerica, AIG, Aflac, Aetna. I just have to run through some basic health and financial questions.</div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>Medical Questions (Vet-Specific)</h3><span class="arr">&#9654;</span></div>
+  <div class="card-body"><div class="sec">
+    <button class="copy-btn" onclick="copyText(this)">Copy</button>
+    <h4>Full Questionnaire</h4>
+    <div class="script">1. For all of your medical needs do you go to the VA or a civilian doctor?
+   Are all prescriptions through the VA or civilian? If VA: Ever rushed to a non-VA hospital?
+
+2. Any heart attacks, heart failure, strokes, TIA, or stents in the last 5 years?
+   Blood thinners (Plavix, warfarin)? Heart meds (Nitrostat, nitroglycerin, eliquis)?
+
+3. Any cancer in the last 5 years? What kind? How long in remission?
+
+4. Any diabetes? Metformin or insulin?
+
+5. Any neuropathy? Gabapentin?
+
+6. High blood pressure? Lisinopril, metoprolol, or amlodipine?
+
+7. Lupus/RA/Asthma? Inhalers?
+
+8. Breathing complications or COPD? Oxygen?
+
+9. Anxiety or depression? Prozac or Seroquel?
+
+10. Bipolar or schizophrenic? Sertraline, abilify, aripiprazole?
+
+11. Kidney or liver problems? Dialysis?
+
+12. Hospitalizations in the last year for 48+ hours?
+
+13. Service-connected disability? What percent?
+
+14. Height and weight?</div>
+  </div></div>
+</div>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>Product Presentation</h3><span class="arr">&#9654;</span></div>
+  <div class="card-body">
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>Whole Life</h4>
+      <div class="script">Here's how this policy works. It's a permanent policy. It will build cash value. Premiums stay the same and coverage stays the same - no increases in monthly costs or decreases in face amount later.
+
+It covers any type of death, illness or accident. And the main thing: it's day 1 coverage. Not one of those policies where you have to wait 2 years to die. Does that make sense?</div>
+    </div>
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>IUL Recommendation (60 or younger)</h4>
+      <div class="script">I'd recommend an IUL over a traditional whole life. Much more upside with cash value - it grows at a higher clip because it gains interest with the stock market which compounds over time.
+
+Later in the policy you can borrow from it tax-free. It's day 1 coverage with living benefits for critical, chronic and terminal illness. You can get 80% of the policy out due to critical, chronic or terminal illness while you're still living.
+
+So if you had a stroke and half your body didn't work you could get up to $80,000 out if you had a $100,000 policy.</div>
+    </div>
+  </div>
+</div>
+`;
+
+// ===== VET #2 =====
+V.vet2 = `
+<h2>Vet Lead Script #2</h2>
+<p class="subtitle">Full veterans script with education, Gold/Silver/Bronze, and objection handling</p>
+<button class="copy-all-btn" onclick="copyAll(this)">Copy Full Script</button>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>Opening</h3><span class="arr open">&#9654;</span></div>
+  <div class="card-body show"><div class="sec">
+    <button class="copy-btn" onclick="copyText(this)">Copy</button>
+    <h4>Introduction</h4>
+    <div class="script">Hey <span class="ph">[Client Name]</span> this is <span class="ph">[Your Name]</span>, I was just giving you a quick call about that form you submitted, regarding the Insurance Plans for Veterans. How are you doing today sir/ma'am?
+
+I have your DOB or Age listed here as <span class="ph">[___]</span>. Is that correct? Marital Status? State?
+
+Perfect, I'm the medical underwriter assigned to you, I work with Vets 6 days a week, my job is super simple, I'm the one that's going to figure out if the VA or the Private Sector is the better option for YOU. Does that make sense?
+
+Was your main concern like most Veterans just making sure the funeral expense doesn't fall a burden on your loved ones? Were you also looking to leave some extra money behind?
+
+Can you receive text messages on this phone? I legally have to send over my verified advisor link so you have it for your records.</div>
+  </div></div>
+</div>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>Dig Into WHY + Educate</h3><span class="arr">&#9654;</span></div>
+  <div class="card-body">
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>Discovery</h4>
+      <div class="script">1. Have you ever thought about whether you want to be buried or cremated?
+2. God forbid you were to pass away tomorrow who would be the beneficiary handling all the affairs? What is their name?
+3. Do you know how much that costs nowadays? Cremation: $5-7K / Burial: $10-15K</div>
+    </div>
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>7 Key Benefits (Have Them Write Down)</h4>
+      <div class="script">Now grab your paper and pen. Write down:
+
+1. PERMANENT COVERAGE: This coverage will never expire. It's forever.
+2. LOCKED IN: Premium never increases, coverage never decreases.
+3. IMMEDIATE COVERAGE: As soon as you make your first premium, <span class="ph">[BENEFICIARY]</span> would receive the entire face value - no 2 year wait period.
+4. LIVING BENEFIT: Terminal illness = access to 80% of the benefit tax free while still alive.
+5. TAX-FREE: Death benefit, living benefit, and cash value.
+6. CASH VALUE: Your policy will accumulate $. It's not IF it pays out, it's WHEN.
+7. DOUBLE ACCIDENTAL: Death from choking, drowning, slip & fall, or car accident = coverage doubles.</div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>Gold / Silver / Bronze</h3><span class="arr">&#9654;</span></div>
+  <div class="card-body"><div class="sec">
+    <button class="copy-btn" onclick="copyText(this)">Copy</button>
+    <h4>3 Options</h4>
+    <div class="script">Based on what you've told me I've built 3 packages. I do legally have to show you all options. The goal is to find the right amount of coverage, for the best price. Write down GOLD, SILVER, AND BRONZE.
+
+- GOLD: Max you can apply for. Covers the FULL COST of the funeral and leaves money behind for <span class="ph">[Beneficiary]</span>. 40k for <span class="ph">[$/month]</span>
+- SILVER: Most popular. Covers FULL COST + inflation. 20K for <span class="ph">[$/month]</span>
+- BRONZE: Covers basic funeral expense. 10k for <span class="ph">[$/month]</span>
+
+GOLDEN QUESTION: Now <span class="ph">[Client Name]</span>, IF you were to qualify, since nothing is guaranteed, which of those 3 options would make the most sense for you to leave behind for <span class="ph">[BENEFICIARY's NAME]</span>?
+
+(Wait for them to talk first!)
+
+Is that comfortable for you? Sometimes we have a bigger heart than budget.</div>
+  </div></div>
+</div>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>Application & Objection Handling</h3><span class="arr">&#9654;</span></div>
+  <div class="card-body">
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>Social Security Objection</h4>
+      <div class="script">I completely understand. That's why I sent you my credentials from the beginning so you can verify me. I can also send a copy of my Driver's License, and we can jump on Zoom if that would make you feel more comfortable.
+
+(Send pic of app) Do you see the carrier name and your name? Now what they do is just validate your identity - make sure you're not a robot. *laugh* Obviously you're not, we're on the phone!</div>
+    </div>
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>Banking - Anti-Money Laundering Approach</h4>
+      <div class="script">Now the next part is the State's Anti-money Laundering verification. They need to verify you've never committed insurance fraud, and that you'll be the one paying for your policy.
+
+If we get you approved, do you want this to go into effect immediately? They'll process the initial hold within 24-48 hours, then you receive a full policy in the mail within a week.
+
+Do you use online banking or a checkbook? Go ahead and grab that info so I can verify the routing # the state system generates.</div>
+    </div>
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>Bank Pushback</h4>
+      <div class="script">Have you ever given or received a check? At the bottom of every check is the routing and account #. That information can't be used to buy something online or go on a shopping spree. What would be weird is if I asked for a Debit/Credit card - that's unsecured. Routing and account # is a secure payment method.
+
+(Send pic of application with carrier name and their name for transparency)</div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>After Closing</h3><span class="arr">&#9654;</span></div>
+  <div class="card-body">
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>Approval + Post-Close Text</h4>
+      <div class="script">Do you want the good or bad news? The bad news is you're stuck with me for the rest of your life. The good news is we were able to get you pre-approved!
+
+Anything going forward I'm your point of contact. This is my personal cell if you ever need me. Look out for that policy in the mail - typically 5-7 business days.
+
+POST-CLOSE TEXT:
+"Hey <span class="ph">[client name]</span>, Save this number as my personal cell. Please let me know once you receive your policy. Feel free to contact me anytime! If you know anyone that could benefit from our services please feel free to share my number. Referrals are much appreciated! Thank you. God bless. -<span class="ph">[Your Name]</span>"</div>
+    </div>
+  </div>
+</div>
+`;
+
+// ===== VET IUL =====
+V.vetiul = `
+<h2>Vet IUL Script</h2>
+<p class="subtitle">IUL script specifically for veteran leads</p>
+<button class="copy-all-btn" onclick="copyAll(this)">Copy Full Script</button>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>Full Script</h3><span class="arr open">&#9654;</span></div>
+  <div class="card-body show">
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>Opening</h4>
+      <div class="script">Hello, <span class="ph">[Name]</span>. My name is <span class="ph">[Your Name]</span>. I am giving you a call about the IUL for veterans request you made. Were you more interested in the tax-free cash value, tax-free retirement, or protection?
+
+Okay, great. I want to take a second to thank you for your service. My job is to design this for you and go through and explain how it works and see if it is something you can even get approved for. You can't just buy it off the shelf like a loaf of bread.</div>
+    </div>
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>IUL Explanation</h4>
+      <div class="script">Based on your goal the way it is supposed to be structured is on a min death max cash value which just means the goal is to have the least amount of insurance required by the IRS to get all the tax benefits in the program.
+
+The programs have what's called a zero % floor which means can't go backward in the policy. Also, it follows the index so you will earn somewhere between 5-15%. Everything that you put in and gain is tax-free. Does that make sense?
+
+What the insurance company is looking at is insurability - the carrier looks at the last 10 years of health history and criminal and driving record.</div>
+    </div>
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>Qualifying Questions</h4>
+      <div class="script">What medications have you been prescribed even if you haven't taken them?
+
+Felonies, Probation or DUI's?
+
+Okay, I have to include anything in your record or they will auto-decline it for not disclosing it so I just want to make sure I have everything...
+
+Everything is built around your budget. What would make sense for you per month?</div>
+    </div>
+  </div>
+</div>
+`;
+
+// ===== FINANCIAL INVENTORY =====
+V.financial = `
+<h2>Financial Inventory Sheet</h2>
+<p class="subtitle">Use during calls to capture client information.</p>
+
+<div class="callout">Three Objectives: <strong>Affordable - Comfortable - See if you qualify</strong></div>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>Client Information to Capture</h3><span class="arr open">&#9654;</span></div>
+  <div class="card-body show">
+    <div class="terms">
+      <div class="term"><h5>Personal Info</h5><p>Name, Age, DOB, Occupation, Medications, Smoker Y/N, Surgeries, Why they want insurance</p></div>
+      <div class="term"><h5>Medical Conditions</h5><p>Heart Attack / Stroke / TIA / CHF / Stents / HBP / Diabetes / Neuropathy / Cancer / Lupus / RA / Asthma & COPD / Thyroid / Anxiety / Depression / Dementia / Alzheimer's / Kidney or Liver / HIV-AIDS</p></div>
+      <div class="term"><h5>Mortgage Details</h5><p>Monthly payment, Term (15/20/30), Refi or New, Interest Rate, Loan Amount, House Value, Equity, Extra payments?</p></div>
+      <div class="term"><h5>Existing Coverage</h5><p>Life insurance Y/N, Private or Work, Beneficiary, Policy type, Company, Policy #, Premium, Face Amount, Exp Date</p></div>
+      <div class="term"><h5>Financial Profile</h5><p>Spender or Saver? 401k / IRA / Stocks / Bonds / Pension / CDs / Savings? Income and source? Discretionary income? Will?</p></div>
+      <div class="term"><h5>Application Info</h5><p>Full name, Phone, DOB, Birth State, SSN, Email, Gender, Address, Driver's License, Employer, Banking (Routing, Account, Type), Physician, Prescriptions</p></div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>Product Quick Reference</h3><span class="arr">&#9654;</span></div>
+  <div class="card-body">
+    <div class="cols">
+      <div class="col">
+        <h4>Term = Temporary</h4>
+        <ul>
+          <li>10-20-30 year coverage</li>
+          <li>Price stays the same</li>
+          <li>Day 1 coverage</li>
+          <li>Living benefits (critical, chronic, terminal)</li>
+          <li>If CBO - 100% Cashback</li>
+        </ul>
+      </div>
+      <div class="col">
+        <h4>Whole Life / UL = Permanent</h4>
+        <ul>
+          <li>Never expires</li>
+          <li>Price stays the same</li>
+          <li>Day 1 coverage</li>
+          <li>Builds cash value</li>
+          <li>Terminal illness benefit 50%</li>
+          <li>Accidental death doubles coverage</li>
+          <li>IUL: 0-10% growth, tax-free</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout"><strong>Generating Referrals:</strong> "You couldn't do me a small favor, could you? You wouldn't happen to know just one person who would benefit from reviewing their life insurance options?" STAY QUIET and let them answer.</div>
+  </div>
+</div>
+`;
+
+// ===== ACTIVITY TRACKER =====
+V.tracker = `
+<h2>Activity Tracker</h2>
+<p class="subtitle">Track your daily dials, appointments, and results.</p>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>Daily Tracking Guide</h3><span class="arr open">&#9654;</span></div>
+  <div class="card-body show">
+    <div class="sec">
+      <h4>Call Key</h4>
+      <div class="script"><strong>/</strong> = No Answer    <strong>A</strong> = Appointment    <strong>NI</strong> = Not Interested    <strong>CB</strong> = Call Back
+
+Track in increments of 25 up to 300 dials per day.</div>
+    </div>
+    <div class="sec">
+      <h4>Weekly Metrics</h4>
+      <div class="script">- Total Dials Made
+- Appointments Set
+- Total Sits
+- Applications Submitted
+- Submitted AP (Annual Premium)
+- Close Ratio
+- Commission Paid
+- Leads Purchased
+- Did you hit your goal this week?
+- What's your goal for next week?</div>
+    </div>
+    <div class="sec">
+      <h4>Daily Schedule</h4>
+      <div class="script">Track dial time and appointments: Monday-Sunday, 8:00 AM to 9:00 PM hourly.
+
+Use the PDF Activity Tracker form for daily tracking, or build this into your CRM.</div>
+    </div>
+  </div>
+</div>
+`;
+
+// ===== FUNCTIONS =====
+let cur = 'home';
+const names = {home:'Home',compare:'Real-Time vs Aged',kb_speed:'Speed to Lead',kb_voicemail:'Getting Past Voicemail',kb_templates:'Text & Email Templates',kb_objections:'Objection Handling',kb_understanding:'Understanding the Lead',kb_cadence:'Follow-Up Cadence',kb_mindset:'Mindset & Goals',fex1:'FEX Script #1',fex2:'FEX Script #2',aged:'Aged Lead Script',mp1:'MP Script #1',mp2:'MP Script #2',iul2:'IUL Script #2',iul3:'IUL Script #3',iulterms:'IUL Terminology',vet1:'Vet Script #1',vet2:'Vet Script #2',vetiul:'Vet IUL Script',financial:'Financial Inventory',tracker:'Activity Tracker'};
+const cats = {kb_speed:'Knowledge Base',kb_voicemail:'Knowledge Base',kb_templates:'Knowledge Base',kb_objections:'Knowledge Base',kb_understanding:'Knowledge Base',kb_cadence:'Knowledge Base',kb_mindset:'Knowledge Base',fex1:'FEX Scripts',fex2:'FEX Scripts',aged:'FEX Scripts',mp1:'Mortgage Protection',mp2:'Mortgage Protection',iul2:'IUL',iul3:'IUL',iulterms:'IUL',vet1:'Veterans',vet2:'Veterans',vetiul:'Veterans',financial:'Tools',tracker:'Tools',compare:'Quick Start'};
+
+function toggleMenu() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('backdrop').classList.toggle('show');
+}
+
+function nav(key) {
+  cur = key;
+  document.getElementById('main').innerHTML = V[key] || '';
+  window.scrollTo(0, 0);
+  document.querySelectorAll('.side-item').forEach((el) => {
+    el.classList.toggle('active', el.textContent.trim() === (names[key]||''));
+  });
+  // Breadcrumb
+  const bc = document.getElementById('breadcrumb');
+  const ph = document.getElementById('print-header');
+  if (key === 'home') {
+    bc.innerHTML = '<a onclick="nav(\'home\')">Home</a>';
+    ph.textContent = 'The GOAT Playbook';
+  } else {
+    const cat = cats[key] || '';
+    const name = names[key] || key;
+    bc.innerHTML = '<a onclick="nav(\'home\')">Home</a><span class="sep">/</span>' + (cat ? '<span>' + cat + '</span><span class="sep">/</span>' : '') + '<span>' + name + '</span>';
+    ph.textContent = 'The GOAT Playbook - ' + name;
+  }
+  // Close menu
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('backdrop').classList.remove('show');
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('backdrop').classList.remove('show');
+  }
+});
+
+function toggle(h) {
+  const b = h.nextElementSibling;
+  const a = h.querySelector('.arr');
+  b.classList.toggle('show');
+  a.classList.toggle('open');
+}
+
+function copyText(btn) {
+  const sec = btn.closest('.sec');
+  const el = sec.querySelector('.script');
+  navigator.clipboard.writeText(el.innerText).then(() => {
+    btn.textContent = 'Copied!';
+    btn.classList.add('ok');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('ok'); }, 1500);
+  });
+}
+
+function copyAll(btn) {
+  const scripts = document.querySelectorAll('#main .script');
+  const text = Array.from(scripts).map(s => s.innerText).join('\n\n---\n\n');
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Copied!';
+    btn.classList.add('ok');
+    setTimeout(() => { btn.textContent = 'Copy Full Script'; btn.classList.remove('ok'); }, 2000);
+  });
+}
+
+function handleSearch(q) {
+  if (!q.trim()) { nav(cur); return; }
+  const lq = q.toLowerCase();
+  let res = [];
+  for (const [k,html] of Object.entries(V)) {
+    if (k==='home') continue;
+    const t = document.createElement('div');
+    t.innerHTML = html;
+    if (t.innerText.toLowerCase().includes(lq)) res.push(k);
+  }
+  const m = document.getElementById('main');
+  if (!res.length) { m.innerHTML = '<p style="color:var(--text-muted)">No results for "'+q+'"</p>'; return; }
+  let h = '<h2>Search Results</h2><p class="subtitle">'+res.length+' result(s) for "'+q+'"</p>';
+  res.forEach(k => {
+    h += '<div class="grid-card" onclick="nav(\''+k+'\')"><h4>'+(names[k]||k)+'</h4></div>';
+  });
+  m.innerHTML = h;
+}
+
+nav('home');
+</script>
+</body>
+</html>
