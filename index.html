@@ -725,6 +725,31 @@ If they still push back: "No worries at all. Since I have you on the phone, can 
 </div>
 
 <div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>"You're a Scam" / Hostile Leads</h3><span class="arr">&#9654;</span></div>
+  <div class="card-body">
+    <div class="callout"><strong>22 out of every ~8,000 support tickets use the word "scam."</strong> This usually happens because the lead doesn't remember filling out a form, has been burned by robocalls before, or is simply having a bad day. It does not mean the lead is fake or that you did anything wrong.</div>
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>De-Escalation Script</h4>
+      <div class="script">"I completely understand your concern, and I appreciate you being cautious - that's actually smart. I'm a licensed insurance agent in <span class="ph">[State]</span>, and my license number is <span class="ph">[License #]</span>. You can verify that with the <span class="ph">[State]</span> Department of Insurance anytime.
+
+The reason I'm calling is that a form was submitted from your area on <span class="ph">[date]</span> requesting information about affordable life insurance options. I'm just following up on that request.
+
+If you're not interested, that's completely fine - I can remove you from our list right now. But if you do want to see what options are available, I'm happy to help."</div>
+    </div>
+    <div class="sec">
+      <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      <h4>If They Remain Hostile</h4>
+      <div class="script">Do not argue. Do not get defensive. Do not try to convince them.
+
+"No problem at all. I'll go ahead and remove your information. Have a good day."
+
+End the call. Mark the disposition in your CRM. Move to your next lead. Some people cannot be won over, and spending 5 minutes trying costs you 5 minutes of productive dial time.</div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
   <div class="card-head" onclick="toggle(this)"><h3>"The form said it was free / low-cost"</h3><span class="arr">&#9654;</span></div>
   <div class="card-body">
     <div class="callout"><strong>GOAT Leads does not advertise free insurance products.</strong> The ads promote affordable, state-regulated options. If a lead claims the form promised something free, they may be confusing your ad with another one they saw, or misremembering the language.</div>
@@ -807,20 +832,42 @@ V.kb_understanding = `
 
 <div class="card">
   <div class="card-head" onclick="toggle(this)"><h3>What Info the Lead Provided</h3><span class="arr open">&#9654;</span></div>
-  <div class="card-body show"><div class="sec"><div class="script">When a lead fills out a GOAT Leads form, they typically provide:
+  <div class="card-body show"><div class="sec"><div class="script">When a lead fills out a GOAT Leads form, the data included depends on the lead type. All leads are generated on landing pages/websites.
 
-<strong>Standard fields (all lead types):</strong>
-- Full name
-- Phone number
-- Email address
-- Date of birth
-- State
+<strong>Vet</strong>
+<em>Contact:</em> First Name, Last Name, Phone Number, Email Address, Date of Birth, Age, State
+<em>Military:</em> Military Status, Branch of Service
+<em>Additional:</em> Coverage Needed, Marital Status, Best Time to Contact, IP Address, Trusted Form URL
 
-<strong>Product-specific fields:</strong>
-- <strong>FEX:</strong> Interest in final expense / burial coverage
-- <strong>Mortgage Protection:</strong> Mortgage amount, monthly payment, home purchase/refi date
-- <strong>IUL:</strong> Retirement goal, monthly contribution range
-- <strong>Veterans:</strong> Military service status, VA benefits
+<strong>FEX</strong>
+<em>Contact:</em> First Name, Last Name, Phone Number, Email Address, State
+<em>Military:</em> Military Status, Branch of Service
+<em>Additional:</em> Coverage Needed
+
+<strong>MP</strong>
+<em>Contact:</em> First Name, Last Name, Phone Number, Email Address, Date of Birth, Age, State
+<em>Mortgage:</em> Mortgage Balance, Mortgage Payment
+<em>Beneficiary:</em> Beneficiary Name, Beneficiary Relationship
+<em>Health:</em> Heart Attack, Stroke, Cancer, Diabetes History
+<em>Additional:</em> Platform, IP Address, Trusted Form URL
+
+<strong>IUL</strong>
+<em>Contact:</em> First Name, Last Name, Phone Number, Email Address, Date of Birth, Age, State
+<em>IUL Details:</em> IUL Goal, Employment Status, Desired Contribution, Desired Retirement Age, Current Retirement Plan
+<em>Additional:</em> Platform, OTP Code (When Available), IP Address, Trusted Form URL
+
+<strong>Trucker</strong>
+<em>Contact:</em> First Name, Last Name, Phone Number, Email Address, Date of Birth, Age, State
+<em>Coverage:</em> Coverage Amount
+<em>Additional:</em> Driver Type (Company / Owner Operator), Length of CDL, Marital Status, Beneficiary Relationship, Platform, IP Address, Trusted Form URL
+
+<strong>Health</strong>
+<em>Contact:</em> First Name, Last Name, Marital Status, Phone Number, Email Address, State
+<em>Health Insurance:</em> Current Plan (Yes/No), Number of Dependents, Current Plan Payment, Spouse/Co-insured On Current Plan
+
+<strong>Spanish FEX</strong>
+<em>Contact:</em> First Name, Last Name, Marital Status, Phone Number, Email Address, State
+<em>Health Insurance:</em> Current Plan (Yes/No), Number of Dependents, Current Plan Payment, Spouse/Co-insured On Current Plan
 
 The lead saw an ad (usually on Facebook/social media), clicked through to a landing page, and filled out a form requesting information. <strong>They took action.</strong> Your job is to follow through on that action.</div></div></div>
 </div>
@@ -872,7 +919,75 @@ Don't get defensive. Instead, acknowledge it: "I know you probably got a few cal
 <strong>The math:</strong>
 If you dial 100 real-time leads and contact 30, and close 10 of those - that's 10 sales. If your average commission is $500, that's $5,000 from 100 leads. The leads that didn't answer aren't "bad leads" - they're just part of the numbers game.
 
-<strong>Focus on what you can control:</strong> your dial count, your speed to lead, and your skill on the phone.</div></div></div>
+<strong>Focus on what you can control:</strong> your dial count, your speed to lead, and your skill on the phone. If you hit a disconnected or wrong number, don't count it as a failed contact - see the Lead Replacement section below for how to get it replaced.</div></div></div>
+</div>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>Lead Replacement Process</h3><span class="arr">&#9654;</span></div>
+  <div class="card-body">
+    <div class="callout"><strong>Over 70% of lead replacement requests are fully approved.</strong> Zero requests have ever been fully denied. The system works - use it.</div>
+    <div class="sec">
+      <h4>How to Request a Replacement</h4>
+      <div class="script">1. Document the outcome in your CRM (disconnected, wrong number, etc.)
+2. Submit your replacement request through the GOAT Leads support portal
+3. Include the lead name and the specific issue (disconnected, wrong number, confirmed fake)
+4. Move to your next lead immediately - don't wait for the replacement to come through</div>
+    </div>
+    <div class="sec">
+      <h4>What Qualifies for Replacement</h4>
+      <div class="script"><strong>Qualifies:</strong>
+- Disconnected phone numbers
+- Wrong numbers (reached a person who is not the lead)
+- Confirmed fake or fabricated information
+
+<strong>Does NOT Qualify:</strong>
+- Voicemail / no answer (the number is real and active, just unanswered)
+- Person answered but denied filling out a form (the number is valid and the person is reachable)
+- Lead was not interested or did not buy
+- You could not close the sale
+
+The distinction is simple: <strong>replacement is for bad contact data, not bad sales outcomes.</strong> If a real person at a real number picked up the phone, that lead did its job - getting you in front of a prospect is what leads do. Closing them is what agents do.</div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>Disconnected & Wrong Numbers</h3><span class="arr">&#9654;</span></div>
+  <div class="card-body">
+    <div class="callout">Disconnected and wrong numbers are a normal part of working leads, especially aged leads. This is not a sign of bad lead quality - it's a byproduct of people changing phone numbers, using prepaid phones, or making typos on forms.</div>
+    <div class="sec">
+      <h4>What To Do</h4>
+      <div class="script">1. Mark the lead disposition in your CRM as disconnected or wrong number
+2. Submit a lead replacement request (see Lead Replacement Process above)
+3. If the lead has an email address, send one email attempt before writing it off entirely
+4. Move immediately to your next lead - do not dwell on it
+
+<strong>Why this happens:</strong>
+- <strong>Aged leads:</strong> People change phone numbers over time. The older the lead, the higher the chance the number has changed.
+- <strong>Prepaid phones:</strong> Many leads use prepaid or temporary phone numbers that get recycled.
+- <strong>Typos:</strong> People make mistakes when entering their phone number on a form.
+- <strong>Carrier issues:</strong> Some numbers are temporarily disconnected due to non-payment and may reconnect later.
+
+Don't let a string of disconnected numbers shake your confidence. Request replacements, keep dialing, and trust the process.</div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-head" onclick="toggle(this)"><h3>If You Reach a Minor</h3><span class="arr">&#9654;</span></div>
+  <div class="card-body">
+    <div class="callout"><strong>If you determine you are speaking with a minor (under 18), stop the sales conversation immediately. This is non-negotiable.</strong></div>
+    <div class="sec">
+      <h4>Required Steps</h4>
+      <div class="script">1. Politely end the conversation: "I appreciate your time, but I need to speak with an adult in the household. Is there a parent or guardian available?"
+2. If no adult is available, thank them and end the call
+3. Mark the lead in your CRM as "Minor - Do Not Contact"
+4. Submit a lead replacement request
+5. <strong>Do not</strong> attempt to sell, quote, or collect any information from the minor
+
+This is a compliance boundary. There are no exceptions and no rebuttals to attempt.</div>
+    </div>
+  </div>
 </div>
 `;
 
